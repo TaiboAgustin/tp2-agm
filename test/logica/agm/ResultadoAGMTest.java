@@ -14,17 +14,17 @@ public class ResultadoAGMTest {
 
     @Test
     public void costoTotalEsLaSumaDeLasAristas() {
-        Arista a1 = new Arista(buenosAires, rosario, 1000.0);
-        Arista a2 = new Arista(rosario, cordoba, 500.0);
-        ResultadoAGM resultado = new ResultadoAGM(Arrays.asList(a1, a2));
+        Arista<Localidad> a1 = new Arista<>(buenosAires, rosario, 1000.0);
+        Arista<Localidad> a2 = new Arista<>(rosario, cordoba, 500.0);
+        ResultadoAGM<Localidad> resultado = new ResultadoAGM<>(Arrays.asList(a1, a2));
         assertEquals(1500.0, resultado.getCostoTotal(), 0.001);
     }
 
     @Test
     public void lasConexionesDelArbolSonNMenosUno() {
-        Arista a1 = new Arista(buenosAires, rosario, 1000.0);
-        Arista a2 = new Arista(rosario, cordoba, 500.0);
-        ResultadoAGM resultado = new ResultadoAGM(Arrays.asList(a1, a2));
+        Arista<Localidad> a1 = new Arista<>(buenosAires, rosario, 1000.0);
+        Arista<Localidad> a2 = new Arista<>(rosario, cordoba, 500.0);
+        ResultadoAGM<Localidad> resultado = new ResultadoAGM<>(Arrays.asList(a1, a2));
         assertEquals(2, resultado.getConexiones().size());
     }
 }
