@@ -7,16 +7,11 @@ public class Localidad {
     private final double latitud;
     private final double longitud;
 
-    public Localidad(String nombre, String provincia, double latitud, double longitud) {
-        if (nombre == null || nombre.trim().isEmpty())
-            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
-        if (provincia == null || provincia.trim().isEmpty())
-            throw new IllegalArgumentException("La provincia no puede ser nula o vacía");
-        if (latitud < -90 || latitud > 90)
-            throw new IllegalArgumentException("La latitud debe estar entre -90 y 90");
-        if (longitud < -180 || longitud > 180)
-            throw new IllegalArgumentException("La longitud debe estar entre -180 y 180");
-
+    public Localidad(String nombre, String provincia, double latitud, double longitud) throws IllegalArgumentException {
+        Validador.validarString(nombre);
+        Validador.validarString(provincia);
+        Validador.validarCoordenadas(latitud, longitud);
+        
         this.nombre = nombre;
         this.provincia = provincia;
         this.latitud = latitud;
@@ -27,4 +22,25 @@ public class Localidad {
     public String getProvincia() { return provincia; }
     public double getLatitud() { return latitud; }
     public double getLongitud() { return longitud; }
+    
+    /* 
+     * Se utiliza la fórmula de Haversine para calcular distancia entre dos puntos de la sup terrestre. Las variables a y c son
+     * parámetros de la fórmula
+     */
+    public double calcularDistancia(Localidad localidadExterna) {
+    	double latLocalidadExterna = localidadExterna.getLatitud();
+    	double lonLocalidadExterna = localidadExterna.getLongitud();
+    	double radioTierra = 6371.0;
+    	
+    	double difLatitud = Math.toRadians(latLocalidadExterna - this.latitud);
+    	double difLongitud = Math.toRadians(lonLocalidadExterna - this.longitud);
+    	
+        double a = Math.sin(difLatitud / 2) * Math.sin(difLatitud / 2)
+                + Math.cos(Math.toRadians(this.latitud)) * Math.cos(Math.toRadians(latLocalidadExterna))
+                * Math.sin(difLongitud / 2) * Math.sin(difLongitud / 2);
+
+       double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+       return radioTierra * c;
+    }
 }
