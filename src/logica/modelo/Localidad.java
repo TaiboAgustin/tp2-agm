@@ -1,5 +1,7 @@
 package logica.modelo;
 
+import java.util.Objects;
+
 public class Localidad {
 
     private final String nombre;
@@ -42,5 +44,21 @@ public class Localidad {
        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
        return radioTierra * c;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Localidad)) return false;
+        Localidad otra = (Localidad) obj;
+        return Double.compare(latitud, otra.latitud) == 0
+            && Double.compare(longitud, otra.longitud) == 0
+            && Objects.equals(nombre, otra.nombre)
+            && Objects.equals(provincia, otra.provincia);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, provincia, latitud, longitud);
     }
 }

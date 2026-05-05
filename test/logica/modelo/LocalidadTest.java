@@ -47,6 +47,11 @@ public class LocalidadTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void nombreSoloEspaciosLanzaExcepcion() {
+        new Localidad("   ", "Buenos Aires", -34.6, -58.4);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void provinciaNulaLanzaExcepcion() {
         new Localidad("CABA", null, -34.6, -58.4);
     }
@@ -57,6 +62,11 @@ public class LocalidadTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void provinciaSoloEspaciosLanzaExcepcion() {
+        new Localidad("CABA", "   ", -34.6, -58.4);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void latitudMenorAlLimiteInferiorLanzaExcepcion() {
         new Localidad("CABA", "Buenos Aires", -91.0, -58.4);
     }
@@ -64,6 +74,12 @@ public class LocalidadTest {
     @Test(expected = IllegalArgumentException.class)
     public void latitudMayorAlLimiteSuperiorLanzaExcepcion() {
         new Localidad("CABA", "Buenos Aires", 91.0, -58.4);
+    }
+
+    @Test
+    public void latitudEnLimitesExtremosSonValidas() {
+        new Localidad("CABA", "Buenos Aires", -90.0, -58.4);
+        new Localidad("CABA", "Buenos Aires", 90.0, -58.4);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -115,4 +131,8 @@ public class LocalidadTest {
         assertTrue(distancia > 0.0);
     }
 
+    public void longitudEnLimitesExtremosSonValidas() {
+        new Localidad("CABA", "Buenos Aires", -34.6, -180.0);
+        new Localidad("CABA", "Buenos Aires", -34.6, 180.0);
+    }
 }

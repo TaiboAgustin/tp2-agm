@@ -1,25 +1,26 @@
 package logica.modelo;
 
+import java.util.Collections;
 import java.util.List;
 
-public class Grafo {
+public class Grafo<T> {
 
-    private final List<Localidad> localidades;
-    private final List<Arista> aristas;
+    private final List<T> nodos;
+    private final List<Arista<T>> aristas;
 
-    public Grafo(List<Localidad> localidades, List<Arista> aristas) {
-        if (localidades == null || localidades.size() < 2)
-            throw new IllegalArgumentException("El grafo debe tener al menos 2 localidades");
+    public Grafo(List<T> nodos, List<Arista<T>> aristas) {
+        if (nodos == null || nodos.size() < 2)
+            throw new IllegalArgumentException("El grafo debe tener al menos 2 nodos");
 
-        int n = localidades.size();
+        int n = nodos.size();
         int aristasEsperadas = n * (n - 1) / 2;
         if (aristas == null || aristas.size() != aristasEsperadas)
             throw new IllegalArgumentException("El grafo debe ser completo: se esperaban " + aristasEsperadas + " aristas");
 
-        this.localidades = localidades;
+        this.nodos = nodos;
         this.aristas = aristas;
     }
 
-    public List<Localidad> getLocalidades() { return localidades; }
-    public List<Arista> getAristas() { return aristas; }
+    public List<T> getNodos() { return Collections.unmodifiableList(nodos); }
+    public List<Arista<T>> getAristas() { return Collections.unmodifiableList(aristas); }
 }

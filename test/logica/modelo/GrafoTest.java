@@ -11,21 +11,21 @@ public class GrafoTest {
     private final Localidad cordoba = new Localidad("Córdoba", "Córdoba", -31.4, -64.2);
 
     @Test
-    public void seCreaCorrectamenteConDosLocalidades() {
-        Arista a = new Arista(buenosAires, rosario, 1000.0);
-        Grafo g = new Grafo(Arrays.asList(buenosAires, rosario), Arrays.asList(a));
-        assertEquals(2, g.getLocalidades().size());
+    public void seCreaCorrectamenteConDosNodos() {
+        Arista<Localidad> a = new Arista<>(buenosAires, rosario, 1000.0);
+        Grafo<Localidad> g = new Grafo<>(Arrays.asList(buenosAires, rosario), Arrays.asList(a));
+        assertEquals(2, g.getNodos().size());
         assertEquals(1, g.getAristas().size());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void menosDeDosLocalidadesLanzaExcepcion() {
-        new Grafo(Arrays.asList(buenosAires), Arrays.asList());
+    public void menosDeDosNodosLanzaExcepcion() {
+        new Grafo<>(Arrays.asList(buenosAires), Arrays.asList());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void grafoNoCompletoLanzaExcepcion() {
-        Arista a = new Arista(buenosAires, rosario, 1000.0);
-        new Grafo(Arrays.asList(buenosAires, rosario, cordoba), Arrays.asList(a));
+        Arista<Localidad> a = new Arista<>(buenosAires, rosario, 1000.0);
+        new Grafo<>(Arrays.asList(buenosAires, rosario, cordoba), Arrays.asList(a));
     }
 }
