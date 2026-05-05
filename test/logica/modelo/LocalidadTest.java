@@ -8,7 +8,7 @@ public class LocalidadTest {
     @Test
     public void seCreaCorrectamente() {
         Localidad l = new Localidad("Buenos Aires", "Buenos Aires", -34.6, -58.4);
-        assertEquals("ROTO", l.getNombre());
+        assertEquals("Buenos Aires", l.getNombre());
         assertEquals("Buenos Aires", l.getProvincia());
         assertEquals(-34.6, l.getLatitud(), 0.001);
         assertEquals(-58.4, l.getLongitud(), 0.001);
