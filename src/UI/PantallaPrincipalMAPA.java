@@ -75,8 +75,8 @@ public class PantallaPrincipalMAPA {
 		//----------------------------------------------
 		mapa = new JMapViewer();
 		mapa.setBounds(226, 11, 400, 396);
-		
-		
+		Coordinate centroArgentina = new Coordinate(-38.4161, -63.6167);
+		mapa.setDisplayPosition(centroArgentina, 4);
 		//----------------------------------------------
 		PlanificadorRed Control = new PlanificadorRed();
 		Control.cargarDatos();
@@ -219,7 +219,7 @@ public class PantallaPrincipalMAPA {
 	            coord
 	    );
 
-	    marcador.getStyle().setBackColor(Color.BLUE);
+	    marcador.getStyle().setBackColor(Color.black);
 	    marcador.getStyle().setColor(Color.WHITE);
 
 	    mapa.addMapMarker(marcador);

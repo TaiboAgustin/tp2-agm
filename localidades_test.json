@@ -28,5 +28,11 @@
     "provincia": "Tucumán",
     "latitud": -26.8083,
     "longitud": -65.2176
+  },
+  {
+    "nombre": "Corrientes ",
+    "provincia": "Corrientes ",
+    "latitud": -27.4691,
+    "longitud": -58.8306
   }
 ]
