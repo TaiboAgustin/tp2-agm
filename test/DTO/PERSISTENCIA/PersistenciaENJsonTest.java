@@ -16,7 +16,7 @@ public class PersistenciaENJsonTest {
 	@Test
     public void testGuardarYCargarLocalidades() {
 
-        String archivo = "localidades_test.json";
+        String archivo = "localidades.json";
 
         // 1. Crear datos
         List<Localidad> lista = new ArrayList<>();
