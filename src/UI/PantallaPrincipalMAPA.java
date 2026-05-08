@@ -23,6 +23,9 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
 public class PantallaPrincipalMAPA {
 
 	private JFrame frame;
@@ -31,6 +34,8 @@ public class PantallaPrincipalMAPA {
 	private JTextField datoProvincia;
 	private JTextField datoLatitud;
 	private JTextField datoLongitud;
+	private final Action action = new SwingAction();
+	private final Action action_1 = new SwingAction_1();
 	/**
 	 * Launch the application.
 	 */
@@ -117,15 +122,16 @@ public class PantallaPrincipalMAPA {
 		panel_mapa.add(datoLongitud);
 		
 		JButton btnNewButton = new JButton("Agregar Localidad");
-		btnNewButton.setForeground(Color.BLACK);
+		btnNewButton.setAction(action);
+		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setBackground(Color.BLACK);
-		btnNewButton.setBounds(75, 165, 119, 23);
+		btnNewButton.setBounds(56, 165, 138, 23);
 		panel_mapa.add(btnNewButton);
 		
-		JLabel lblNewLabel = new JLabel("Nombre :");
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setBounds(10, 42, 58, 20);
-		panel_mapa.add(lblNewLabel);
+		JLabel lblNombre = new JLabel("Nombre :");
+		lblNombre.setForeground(Color.WHITE);
+		lblNombre.setBounds(10, 42, 58, 20);
+		panel_mapa.add(lblNombre);
 		
 		JLabel lblProvincia = new JLabel("Provincia :");
 		lblProvincia.setForeground(Color.WHITE);
@@ -149,6 +155,7 @@ public class PantallaPrincipalMAPA {
 		panel_mapa.add(lblPlanificadorDeViajes);
 		
 		JButton btnNewButton_1 = new JButton("Generar Planificacion");
+		btnNewButton_1.setAction(action_1);
 		btnNewButton_1.setBounds(10, 199, 184, 36);
 		panel_mapa.add(btnNewButton_1);
 		
@@ -216,5 +223,24 @@ public class PantallaPrincipalMAPA {
 	    marcador.getStyle().setColor(Color.WHITE);
 
 	    mapa.addMapMarker(marcador);
+	}
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "Agregar Localidad");
+			putValue(SHORT_DESCRIPTION, "Desea Agregar una nueva Localidad");
+		}
+		public void actionPerformed(ActionEvent e) {
+			PlanificadorRed.agregarLocalidad(DatoNombre.getText(),datoProvincia.getText(),Double.parseDouble(datoLatitud.getText()),Double.parseDouble(datoLongitud.getText()));
+			mapa.removeAllMapMarkers();
+			cargarLocalidadesEnMapa();
+		}
+	}
+	private class SwingAction_1 extends AbstractAction {
+		public SwingAction_1() {
+			putValue(NAME, "Generacion de AGM");
+			putValue(SHORT_DESCRIPTION, "AGM?");
+		}
+		public void actionPerformed(ActionEvent e) {
+		}
 	}
 }

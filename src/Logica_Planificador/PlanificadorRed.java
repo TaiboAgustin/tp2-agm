@@ -14,7 +14,7 @@ public class PlanificadorRed {
         localidades = new ArrayList<>();
     }
 
-    public void agregarLocalidad(
+    public static void agregarLocalidad(
             String nombre,
             String provincia,
             double latitud,
@@ -28,9 +28,10 @@ public class PlanificadorRed {
         );
 
         localidades.add(loc);
+        guardarDatos();
     }
 
-    public void guardarDatos() {
+    public static void guardarDatos() {
         PersistenciaENJson.guardarLocalidades(
                 localidades,
                 "localidades_test.json"
