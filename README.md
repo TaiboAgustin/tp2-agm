@@ -27,7 +27,7 @@ Aplicación para planificar conexiones de fibra óptica entre localidades median
 - [x] `AlgoritmoKruskal`
 - [x] Tests de integración
 - [x] CI con GitHub Actions (tests + cobertura mínima 80%)
-- [ ] PR mergeado a `main`
+- [x] PR mergeado a `main`
 
 ### Módulo 4 - Visualización
 - [ ] Mostrar resultado del AGM en pantalla
