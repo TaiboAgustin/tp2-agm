@@ -2,37 +2,13 @@
   {
     "nombre": "Buenos Aires",
     "provincia": "Buenos Aires",
-    "latitud": -34.6,
-    "longitud": -58.4
+    "latitud": -34.6037,
+    "longitud": -58.3816
   },
   {
-    "nombre": "Cordoba",
-    "provincia": "Cordoba",
-    "latitud": -31.4,
-    "longitud": -64.2
-  },
-  {
-    "nombre": "San Fernando del Valle de Catamarca",
-    "provincia": "Catamarca",
-    "latitud": -28.4696,
-    "longitud": -65.7852
-  },
-  {
-    "nombre": "Resistencia",
-    "provincia": "Chaco",
-    "latitud": -27.4636,
-    "longitud": -58.9867
-  },
-  {
-    "nombre": "San Miguel de Tucumán ",
-    "provincia": "Tucumán",
-    "latitud": -26.8083,
-    "longitud": -65.2176
-  },
-  {
-    "nombre": "Corrientes ",
-    "provincia": "Corrientes ",
-    "latitud": -27.4691,
-    "longitud": -58.8306
+    "nombre": "Mendoza",
+    "provincia": "Mendoza",
+    "latitud": -32.8895,
+    "longitud": -68.8458
   }
 ]
