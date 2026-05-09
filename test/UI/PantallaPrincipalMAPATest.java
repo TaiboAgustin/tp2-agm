@@ -124,4 +124,12 @@ public class PantallaPrincipalMAPATest {
 
         assertEquals(51, linea.size());
     }
+    @Test
+    public void testCrearPantalla() {
+
+        PantallaPrincipalMAPA pantalla =
+                new PantallaPrincipalMAPA();
+
+        assertNotNull(pantalla);
+    }
 }
