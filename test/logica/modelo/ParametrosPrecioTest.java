@@ -3,39 +3,75 @@ package logica.modelo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-class ParametrosPrecioTest {
+public class ParametrosPrecioTest {
+
+    private static final float COSTO_KM_VALIDO             = 10.0f;
+    private static final float TARIFA_INTERPROV_VALIDA      = 50.0f;
+    private static final float INCREMENTO_VALIDO            = 1.5f;
 
     @Test
-    void seCreanValoresCorrectamente() {
-        ParametrosPrecio parametros = new ParametrosPrecio(10.5f, 200.0f, 15.0f);
-
-        assertEquals(10.5f,  parametros.getCostoPorKm(), 000001);
-        assertEquals(200.0f, parametros.getTarifaInterprovincial(), 000001);
-        assertEquals(15.0f,  parametros.getIncrementoCostoDistanciasLargas(), 000001);
+    public void seCreaCorrectamenteConValoresValidos() {
+        ParametrosPrecio p = new ParametrosPrecio(COSTO_KM_VALIDO, TARIFA_INTERPROV_VALIDA, INCREMENTO_VALIDO);
+        assertEquals(COSTO_KM_VALIDO,        p.getCostoPorKm(),                    0.001f);
+        assertEquals(TARIFA_INTERPROV_VALIDA, p.getTarifaInterprovincial(),         0.001f);
+        assertEquals(INCREMENTO_VALIDO,       p.getIncrementoCostoDistanciasLargas(), 0.001f);
     }
-    
+
     @Test
-    void constructorNoFallaConDecimales() {
-        new ParametrosPrecio(0.01f, 0.01f, 0.01f);
+    public void seCreaCorrectamenteConValoresMuyPequenosPositivos() {
+        ParametrosPrecio p = new ParametrosPrecio(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
+        assertEquals(Float.MIN_VALUE, p.getCostoPorKm(),                    0.0f);
+        assertEquals(Float.MIN_VALUE, p.getTarifaInterprovincial(),         0.0f);
+        assertEquals(Float.MIN_VALUE, p.getIncrementoCostoDistanciasLargas(), 0.0f);
+    }
+
+    @Test
+    public void seCreaCorrectamenteConValoresMuyGrandes() {
+        ParametrosPrecio p = new ParametrosPrecio(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
+        assertEquals(Float.MAX_VALUE, p.getCostoPorKm(),                    0.0f);
+        assertEquals(Float.MAX_VALUE, p.getTarifaInterprovincial(),         0.0f);
+        assertEquals(Float.MAX_VALUE, p.getIncrementoCostoDistanciasLargas(), 0.0f);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    void preciosEnCeroFalla() {
-        new ParametrosPrecio(0f, 0f, 0f);
+    public void costoPorKmCeroLanzaExcepcion() {
+        new ParametrosPrecio(0.0f, TARIFA_INTERPROV_VALIDA, INCREMENTO_VALIDO);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    void constructoPrecioPorKmNegativoFalla() {
-    	new ParametrosPrecio(-1f, 200.0f, 15.0f);
+    public void costoPorKmNegativoLanzaExcepcion() {
+        new ParametrosPrecio(-1.0f, TARIFA_INTERPROV_VALIDA, INCREMENTO_VALIDO);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    void constructorTarifaInterprovincialNegativaFalla() {
-    	new ParametrosPrecio(10.5f, -1f, 15.0f);
+    public void tarifaInterprovincialCeroLanzaExcepcion() {
+        new ParametrosPrecio(COSTO_KM_VALIDO, 0.0f, INCREMENTO_VALIDO);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    void constructorIncrementoLargaDistanciaFalla() {
-    	new ParametrosPrecio(10.5f, 200.0f, -1f);
+    public void tarifaInterprovincialNegativaLanzaExcepcion() {
+        new ParametrosPrecio(COSTO_KM_VALIDO, -5.0f, INCREMENTO_VALIDO);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void incrementoCostoDistanciasLargasCeroLanzaExcepcion() {
+        new ParametrosPrecio(COSTO_KM_VALIDO, TARIFA_INTERPROV_VALIDA, 0.0f);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void incrementoCostoDistanciasLargasNegativoLanzaExcepcion() {
+        new ParametrosPrecio(COSTO_KM_VALIDO, TARIFA_INTERPROV_VALIDA, -0.5f);
+    }
+
+    @Test
+    public void cadaGetterRetornaElValorDeSuPropioParametro() {
+        float costo      = 12.5f;
+        float tarifa     = 75.0f;
+        float incremento = 2.0f;
+        ParametrosPrecio p = new ParametrosPrecio(costo, tarifa, incremento);
+
+        assertNotEquals(p.getCostoPorKm(),                    tarifa,     0.001f);
+        assertNotEquals(p.getTarifaInterprovincial(),         costo,      0.001f);
+        assertNotEquals(p.getIncrementoCostoDistanciasLargas(), costo,    0.001f);
     }
 }

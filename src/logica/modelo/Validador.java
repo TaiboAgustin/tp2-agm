@@ -16,7 +16,7 @@ public class Validador {
         if (latitud < LATITUD_MINIMA || latitud > LATITUD_MAXIMA) {
             throw new IllegalArgumentException("La latitud debe estar entre -90 y 90");
         }
-        if (longitud < LONGITUD_MAXIMA || longitud > LONGITUD_MINIMA) {
+        if (longitud > LONGITUD_MAXIMA || longitud < LONGITUD_MINIMA) {
             throw new IllegalArgumentException("La longitud debe estar entre -180 y 180");		
         }
 	}
