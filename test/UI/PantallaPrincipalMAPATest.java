@@ -136,4 +136,100 @@ public class PantallaPrincipalMAPATest {
 
         assertEquals(51, linea.size());
     }
+    @Test
+    public void testGenerarLineaCoordenadasPositivas() {
+
+        Coordinate origen =
+                new Coordinate(10, 20);
+
+        Coordinate destino =
+                new Coordinate(30, 40);
+
+        ArrayList<Coordinate> linea =
+                PantallaPrincipalMAPA
+                        .generarLinea(
+                                origen,
+                                destino
+                        );
+
+        assertNotNull(linea);
+
+        assertEquals(51, linea.size());
+    }
+    @Test
+    public void testGenerarLineaCoordenadasExtremas() {
+
+        Coordinate origen =
+                new Coordinate(-90, -180);
+
+        Coordinate destino =
+                new Coordinate(90, 180);
+
+        ArrayList<Coordinate> linea =
+                PantallaPrincipalMAPA
+                        .generarLinea(
+                                origen,
+                                destino
+                        );
+
+        assertEquals(51, linea.size());
+    }
+    @Test
+    public void testLineaTienePuntosIntermedios() {
+
+        Coordinate origen =
+                new Coordinate(-34,-58);
+
+        Coordinate destino =
+                new Coordinate(-35,-59);
+
+        ArrayList<Coordinate> linea =
+                PantallaPrincipalMAPA
+                        .generarLinea(
+                                origen,
+                                destino
+                        );
+
+        Coordinate medio =
+                linea.get(25);
+
+        assertNotNull(medio);
+    }
+    @Test
+    public void testLineaCambiaGradualmente() {
+
+        Coordinate origen =
+                new Coordinate(-34,-58);
+
+        Coordinate destino =
+                new Coordinate(-35,-59);
+
+        ArrayList<Coordinate> linea =
+                PantallaPrincipalMAPA
+                        .generarLinea(
+                                origen,
+                                destino
+                        );
+
+        Coordinate primero = linea.get(0);
+        Coordinate segundo = linea.get(1);
+
+        assertNotEquals(
+                primero.getLat(),
+                segundo.getLat(),
+                0.0001
+        );
+    }
+    @Test
+    public void testMismoPuntoTiene51Coordenadas() {
+
+        Coordinate c =
+                new Coordinate(0,0);
+
+        ArrayList<Coordinate> linea =
+                PantallaPrincipalMAPA
+                        .generarLinea(c,c);
+
+        assertEquals(51, linea.size());
+    }
 }
