@@ -14,6 +14,7 @@ import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapPolygon;
 
+import Logica_Planificador.ConexionVisual;
 import Logica_Planificador.PlanificadorRed;
 import logica.modelo.Localidad;
 
@@ -34,6 +35,7 @@ public class PantallaPrincipalMAPA {
 	private JTextField datoProvincia;
 	private JTextField datoLatitud;
 	private JTextField datoLongitud;
+	private JLabel lblResultado;
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 	/**
@@ -165,11 +167,11 @@ public class PantallaPrincipalMAPA {
 		lblNewLabel_1.setBounds(10, 269, 206, 36);
 		panel_mapa.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("//Aqui va el resultado");
-		lblNewLabel_2.setForeground(Color.WHITE);
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(10, 316, 206, 36);
-		panel_mapa.add(lblNewLabel_2);
+		
+		lblResultado.setForeground(Color.WHITE);
+		lblResultado.setHorizontalAlignment(SwingConstants.CENTER);
+		lblResultado.setBounds(10, 316, 206, 36);
+		panel_mapa.add(lblResultado);
 		
 		
 	
@@ -224,6 +226,21 @@ public class PantallaPrincipalMAPA {
 
 	    mapa.addMapMarker(marcador);
 	}
+	
+	private void dibujarAGM(List<ConexionVisual> conexiones) {
+	    for (ConexionVisual c : conexiones) {
+	        Coordinate origen =
+	                new Coordinate(
+	                        c.getLat1(),
+	                        c.getLon1()
+	                );
+	        Coordinate destino =
+	                new Coordinate(c.getLat2(),c.getLon2());
+	        MapPolygonImpl linea = new MapPolygonImpl(generarLinea(origen, destino ));
+	        mapa.addMapPolygon(linea);
+	    }
+	}
+	
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "Agregar Localidad");
@@ -240,7 +257,11 @@ public class PantallaPrincipalMAPA {
 			putValue(NAME, "Generacion de AGM");
 			putValue(SHORT_DESCRIPTION, "AGM?");
 		}
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) { 
+			//resultado=PlanificadorRed.generarAGM(
+			//dibujarAGM(resultado));   ********** desbloquear esto cuando tengan el generador de AGM
+			//lblResultado.setText(resultado.getCosto);
+			System.out.println("GeneroAGM");
 		}
 	}
 }

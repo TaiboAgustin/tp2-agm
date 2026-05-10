@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DTO.PersistenciaENJson;
+import logica.agm.AlgoritmoKruskal;
+import logica.agm.ResultadoAGM;
+import logica.modelo.Arista;
+import logica.modelo.Grafo;
 import logica.modelo.Localidad;
 
 public class PlanificadorRed {
@@ -47,4 +51,25 @@ public class PlanificadorRed {
     public static List<Localidad> getLocalidades() {
         return localidades;
     }
+   /* public List<ConexionVisual> generarConexionesVisuales() {
+    	// ResultadoAGM <Localidad> resultado = generarAGM();        ****metodo para generar el AGM
+
+		List<ConexionVisual> conexiones =
+		        new ArrayList<>();
+		
+		// for (Arista<Localidad> arista : resultado.getConexiones()) {		*** getConexiones para ese AGM
+		
+		    ConexionVisual conexion =
+		            new ConexionVisual(
+		                    arista.getOrigen().getLatitud(),
+		                    arista.getOrigen().getLongitud(),
+		                    arista.getDestino().getLatitud(),
+		                    arista.getDestino().getLongitud()
+		 );
+		
+		    conexiones.add(conexion);
+		}
+		
+		return conexiones;
+} */
 }
