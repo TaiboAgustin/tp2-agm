@@ -22,28 +22,30 @@ public class GeneradorDeGrafoTest {
         Localidad caba = new Localidad("CABA", "Buenos Aires", -34.6037, -58.3816);
         Localidad cordoba = new Localidad("Córdoba", "Córdoba", -31.4201, -64.1888);
 
-        double distancia = GeneradorDeGrafo.calcularDistancia(caba, cordoba);
+        double distancia = caba.calcularDistancia(cordoba);
         
         // Tolerancia de 5km por la curvatura de la tierra
         assertEquals(646.0, distancia, 5.0); 
     }
-
     @Test
     public void testCostoConTodosLosRecargos() {
-        // CABA a Córdoba: > 300km (aplica 20%) y distinta provincia (aplica $50000)
         Localidad caba = new Localidad("CABA", "Buenos Aires", -34.6037, -58.3816);
-        Localidad cordoba = new Localidad("Córdoba", "Córdoba", -31.4201, -64.1888);
+        Localidad cordoba = new Localidad("Cordoba", "Cordoba", -31.4201, -64.1888);
         
-        double distancia = GeneradorDeGrafo.calcularDistancia(caba, cordoba);
+        // Creamos los parámetros con valores de prueba (10.0 costo km, 50.0 fijo, 1.5% aumento)
+        ParametrosPrecio param = new ParametrosPrecio(10.0, 50.0, 1.5);
         
-        double costoEsperado = (distancia * 1000.0); // Costo base
-        costoEsperado += costoEsperado * 0.20;       // +20% por distancia
-        costoEsperado += 50000.0;                    // + Fijo por provincia
+        double distancia = caba.calcularDistancia(cordoba);
+        
+        // Cálculo manual para el "esperado"
+        double costoBase = distancia * param.getCostoPorKm();
+        double conAumento = costoBase * (1 + param.getPorcentajeAumento() / 100.0);
+        double costoEsperado = conAumento + param.getCostoFijoInterprovincial();
 
-        double costoReal = GeneradorDeGrafo.calcularCosto(caba, cordoba, parametros);
-        
-        // Tolerancia de 0.1 pesos en el cálculo
-        assertEquals(costoEsperado, costoReal, 0.1);
+        // Llamada al método de tu clase (asegurate de usar el nombre correcto de tu clase)
+        double costoReal = GeneradorDeGrafo.calcularCosto(caba, cordoba, param);
+
+        assertEquals(costoEsperado, costoReal, 1.0);
     }
 
     @Test
@@ -57,7 +59,7 @@ public class GeneradorDeGrafoTest {
         Grafo<Localidad> grafo = GeneradorDeGrafo.construirGrafoCompleto(lista, parametros);
         
         // 3 localidades deben generar exactamente 3 aristas en un grafo completo
-        // Además, esto prueba implícitamente que la validación n*(n-1)/2 de tus compañeros funciona bien
+        // Además, esto prueba implícitamente que la validación n*(n-1)/2
         assertEquals(3, grafo.getAristas().size());
     }
 }

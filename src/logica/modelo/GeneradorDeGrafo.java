@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeneradorDeGrafo {
-	private static final double RADIO_TIERRA_KM = 6371.0;
     // Método principal que construye el grafo completo
     public static Grafo<Localidad> construirGrafoCompleto(List<Localidad> localidades, ParametrosPrecio param) {
         
@@ -31,7 +30,7 @@ public class GeneradorDeGrafo {
 
     // Lógica de negocio (Costos)
     public static double calcularCosto(Localidad loc1, Localidad loc2, ParametrosPrecio param) {
-        double distancia = calcularDistancia(loc1, loc2);
+    	double distancia = loc1.calcularDistancia(loc2);
         
         double costoTotal = distancia * param.getCostoPorKm();
         
@@ -47,23 +46,5 @@ public class GeneradorDeGrafo {
         return costoTotal;
     }
 
-    // Matemática pura (Haversine)
-    public static double calcularDistancia(Localidad loc1, Localidad loc2) {
-        // Asumiendo que Localidad tiene getLatitud() y getLongitud()
-        double lat1 = Math.toRadians(loc1.getLatitud());
-        double lon1 = Math.toRadians(loc1.getLongitud());
-        double lat2 = Math.toRadians(loc2.getLatitud());
-        double lon2 = Math.toRadians(loc2.getLongitud());
-
-        double dLat = lat2 - lat1;
-        double dLon = lon2 - lon1;
-
-        double a = Math.pow(Math.sin(dLat / 2), 2) +
-                   Math.cos(lat1) * Math.cos(lat2) *
-                   Math.pow(Math.sin(dLon / 2), 2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return RADIO_TIERRA_KM * c;
-    }
+   
 }
