@@ -201,4 +201,50 @@ public class PersistenciaENJsonTest {
 
         assertEquals(10, cargadas.size());
     }
+    @Test
+    public void testSobrescribirArchivo() {
+
+        String archivo = "test.json";
+
+        List<Localidad> lista1 =
+                new ArrayList<>();
+
+        lista1.add(
+                new Localidad(
+                        "A","B",1,2
+                )
+        );
+
+        PersistenciaENJson
+                .guardarLocalidades(
+                        lista1,
+                        archivo
+                );
+
+        List<Localidad> lista2 =
+                new ArrayList<>();
+
+        lista2.add(
+                new Localidad(
+                        "C","D",3,4
+                )
+        );
+
+        PersistenciaENJson
+                .guardarLocalidades(
+                        lista2,
+                        archivo
+                );
+
+        List<Localidad> cargadas =
+                PersistenciaENJson
+                        .cargarLocalidades(
+                                archivo
+                        );
+
+        assertEquals(
+                "C",
+                cargadas.get(0).getNombre()
+        );
+    }
 }

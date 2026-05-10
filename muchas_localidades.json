@@ -1,0 +1,62 @@
+[
+  {
+    "nombre": "Ciudad0",
+    "provincia": "Provincia0",
+    "latitud": 0.0,
+    "longitud": 0.0
+  },
+  {
+    "nombre": "Ciudad1",
+    "provincia": "Provincia1",
+    "latitud": 1.0,
+    "longitud": 1.0
+  },
+  {
+    "nombre": "Ciudad2",
+    "provincia": "Provincia2",
+    "latitud": 2.0,
+    "longitud": 2.0
+  },
+  {
+    "nombre": "Ciudad3",
+    "provincia": "Provincia3",
+    "latitud": 3.0,
+    "longitud": 3.0
+  },
+  {
+    "nombre": "Ciudad4",
+    "provincia": "Provincia4",
+    "latitud": 4.0,
+    "longitud": 4.0
+  },
+  {
+    "nombre": "Ciudad5",
+    "provincia": "Provincia5",
+    "latitud": 5.0,
+    "longitud": 5.0
+  },
+  {
+    "nombre": "Ciudad6",
+    "provincia": "Provincia6",
+    "latitud": 6.0,
+    "longitud": 6.0
+  },
+  {
+    "nombre": "Ciudad7",
+    "provincia": "Provincia7",
+    "latitud": 7.0,
+    "longitud": 7.0
+  },
+  {
+    "nombre": "Ciudad8",
+    "provincia": "Provincia8",
+    "latitud": 8.0,
+    "longitud": 8.0
+  },
+  {
+    "nombre": "Ciudad9",
+    "provincia": "Provincia9",
+    "latitud": 9.0,
+    "longitud": 9.0
+  }
+]

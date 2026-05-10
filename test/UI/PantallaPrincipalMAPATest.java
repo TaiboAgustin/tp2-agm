@@ -124,4 +124,16 @@ public class PantallaPrincipalMAPATest {
 
         assertEquals(51, linea.size());
     }
+    @Test
+    public void testGenerarLineaMismoPunto() {
+
+        Coordinate c =
+                new Coordinate(-34,-58);
+
+        ArrayList<Coordinate> linea =
+                PantallaPrincipalMAPA
+                        .generarLinea(c, c);
+
+        assertEquals(51, linea.size());
+    }
 }
