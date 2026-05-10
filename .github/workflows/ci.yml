@@ -32,7 +32,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           TEST_CLASSES=$(find bin -name "*Test.class" | sed 's|bin/||' | sed 's|/|.|g' | sed 's|\.class$||')
-          java -javaagent:jacoco-agent.jar=destfile=jacoco.exec -cp "bin:lib/*" org.junit.runner.JUnitCore $TEST_CLASSES
+          java -javaagent:jacoco-agent.jar=destfile=jacoco.exec,excludes=UI/* -cp "bin:lib/*" org.junit.runner.JUnitCore $TEST_CLASSES
 
       - name: Generate coverage report
         run: |
