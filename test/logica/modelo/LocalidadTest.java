@@ -122,7 +122,7 @@ public class LocalidadTest {
     public void distanciaBairesMendozaCorrecta() {
         Localidad buenosAires = new Localidad("Buenos Aires", "Buenos Aires", -34.6037, -58.3816);
         Localidad mendoza     = new Localidad("Mendoza", "Mendoza", -32.8908, -68.8272);
-        assertEquals(940.0, buenosAires.calcularDistancia(mendoza), 10.0);
+        assertEquals(984.0, buenosAires.calcularDistancia(mendoza), 10.0);
     }
 
     @Test(expected = NullPointerException.class)
