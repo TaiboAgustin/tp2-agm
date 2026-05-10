@@ -36,7 +36,8 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          java -jar jacococli.jar report jacoco.exec \
+            rm -rf bin/UI
+            java -jar jacococli.jar report jacoco.exec \
             --classfiles bin \
             --sourcefiles src \
             --xml coverage.xml
