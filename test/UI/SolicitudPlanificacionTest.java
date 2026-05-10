@@ -19,7 +19,6 @@ public class SolicitudPlanificacionTest {
     private SolicitudDePlanificacion frame;
     private Main mockParent;
 
- // Campo en la clase de test
     private int mensajesMostrados;
 
     @Before
@@ -243,7 +242,6 @@ public class SolicitudPlanificacionTest {
         });
     }
 
-    // ── helpers ──────────────────────────────────────────────────────────────
 
     private JButton findButton(Container container, String text) {
         for (Component c : container.getComponents()) {
