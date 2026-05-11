@@ -23,7 +23,7 @@ public class Validador {
 	
 	public static void validarPrecio (double precio) throws IllegalArgumentException {
 		if (precio <= 0) {
-			throw new IllegalArgumentException("El precio no puede ser negativo");
+			throw new IllegalArgumentException("El precio debe ser mayor a cero");
 		}
 	}
 	
