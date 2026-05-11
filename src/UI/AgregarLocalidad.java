@@ -85,9 +85,6 @@ public class AgregarLocalidad extends JDialog {
             double latitud  = Double.parseDouble(latStr);
             double longitud = Double.parseDouble(lonStr);
 
-            if (latitud  < -90  || latitud  > 90)  throw new NumberFormatException();
-            if (longitud < -180 || longitud > 180)  throw new NumberFormatException();
-
             localidadCreada = new Localidad(nombre, provincia, latitud, longitud);
             dispose();
 
