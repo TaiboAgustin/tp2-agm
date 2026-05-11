@@ -1,10 +1,10 @@
 package logica.modelo;
 
 public class Validador {
-	private static final int LONGITUD_MAXIMA =  180;
-	private static final int LONGITUD_MINIMA = -180;
-	private static final int LATITUD_MAXIMA = 90;
-	private static final int LATITUD_MINIMA = -90;
+	private static final double LONGITUD_MAXIMA =  180d;
+	private static final double LONGITUD_MINIMA = -180d;
+	private static final double LATITUD_MAXIMA = 90d;
+	private static final double LATITUD_MINIMA = -90d;
 	
 	public static void validarString(String textoAValidar) throws IllegalArgumentException {
         if (textoAValidar == null || textoAValidar.trim().isEmpty()) {

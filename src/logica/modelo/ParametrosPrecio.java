@@ -5,14 +5,14 @@ public class ParametrosPrecio {
 	private double costoFijoInterprovincial;
 	private double porcentajeAumento;
 	
-	public ParametrosPrecio(double costoPorKm, double tarifaInterprovincial, double incrementoCostoDistanciasLargas) throws IllegalArgumentException {
-		Validador.validarPrecio(costoPorKm);
-		Validador.validarPrecio(tarifaInterprovincial);
-		Validador.validarPrecio(incrementoCostoDistanciasLargas);
+	public ParametrosPrecio(double costoKm, double costoFijoInterprovincial, double porcentajeAumento) throws IllegalArgumentException {
+		Validador.validarPrecio(costoKm);
+		Validador.validarPrecio(costoFijoInterprovincial);
+		Validador.validarPrecio(porcentajeAumento);
 		
-		this.costoKm = costoPorKm;
-		this.costoFijoInterprovincial = tarifaInterprovincial;
-		this.porcentajeAumento = incrementoCostoDistanciasLargas;
+		this.costoKm = costoKm;
+		this.costoFijoInterprovincial = costoFijoInterprovincial;
+		this.porcentajeAumento = porcentajeAumento;
 	}
 	
 	public double getCostoPorKm() {
