@@ -3,7 +3,7 @@ package UI;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -12,7 +12,6 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
-import org.openstreetmap.gui.jmapviewer.interfaces.MapPolygon;
 
 import Logica_Planificador.ConexionVisual;
 import Logica_Planificador.PlanificadorRed;
@@ -31,7 +30,7 @@ public class PantallaPrincipalMAPA {
 
 	private JFrame frame;
 	private JMapViewer mapa;
-	private JTextField DatoNombre;
+	private JTextField datoNombre;
 	private JTextField datoProvincia;
 	private JTextField datoLatitud;
 	private JTextField datoLongitud;
@@ -91,13 +90,13 @@ public class PantallaPrincipalMAPA {
 		panel_mapa.add(mapa);
 		mapa.setLayout(null);
 		
-		DatoNombre = new JTextField();
-		DatoNombre.setBackground(new Color(0, 0, 0));
-		DatoNombre.setForeground(new Color(255, 255, 255));
-		DatoNombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		DatoNombre.setBounds(99, 42, 74, 20);
-		panel_mapa.add(DatoNombre);
-		DatoNombre.setColumns(10);
+		datoNombre = new JTextField();
+		datoNombre.setBackground(new Color(0, 0, 0));
+		datoNombre.setForeground(new Color(255, 255, 255));
+		datoNombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		datoNombre.setBounds(99, 42, 74, 20);
+		panel_mapa.add(datoNombre);
+		datoNombre.setColumns(10);
 		
 		datoProvincia = new JTextField();
 		datoProvincia.setForeground(Color.WHITE);
@@ -247,7 +246,7 @@ public class PantallaPrincipalMAPA {
 			putValue(SHORT_DESCRIPTION, "Desea Agregar una nueva Localidad");
 		}
 		public void actionPerformed(ActionEvent e) {
-			PlanificadorRed.agregarLocalidad(DatoNombre.getText(),datoProvincia.getText(),Double.parseDouble(datoLatitud.getText()),Double.parseDouble(datoLongitud.getText()));
+			PlanificadorRed.agregarLocalidad(datoNombre.getText(),datoProvincia.getText(),Double.parseDouble(datoLatitud.getText()),Double.parseDouble(datoLongitud.getText()));
 			mapa.removeAllMapMarkers();
 			cargarLocalidadesEnMapa();
 		}

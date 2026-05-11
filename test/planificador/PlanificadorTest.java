@@ -1,7 +1,8 @@
 package planificador;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,73 +11,115 @@ import Logica_Planificador.PlanificadorRed;
 import logica.modelo.Localidad;
 
 public class PlanificadorTest {
-	private PlanificadorRed planificador;
 
     @Before
-    public void setUp() {
-        PlanificadorRed Control = new PlanificadorRed();
+    public void resetearLista() {
+
+        PlanificadorRed
+                .getLocalidades()
+                .clear();
     }
 
     @Test
     public void testAgregarLocalidad() {
 
         PlanificadorRed.agregarLocalidad(
-                "La Plata",
                 "Buenos Aires",
-                -34.9214,
-                -57.9544
+                "Buenos Aires",
+                -34.6,
+                -58.4
         );
 
-        assertEquals(1, PlanificadorRed.getLocalidades().size());
+        List<Localidad> lista =
+                PlanificadorRed
+                        .getLocalidades();
+
+        assertEquals(
+                1,
+                lista.size()
+        );
+
+        assertEquals(
+                "Buenos Aires",
+                lista.get(0).getNombre()
+        );
     }
 
     @Test
-    public void testLocalidadGuardadaCorrectamente() {
+    public void testAgregarMuchasLocalidades() {
 
         PlanificadorRed.agregarLocalidad(
-                "Córdoba",
-                "Córdoba",
-                -31.4167,
-                -64.1833
+                "A",
+                "A",
+                1,
+                1
         );
 
-        Localidad loc = PlanificadorRed.getLocalidades().get(0);
+        PlanificadorRed.agregarLocalidad(
+                "B",
+                "B",
+                2,
+                2
+        );
 
-        assertEquals("Córdoba", loc.getNombre());
-        assertEquals("Córdoba", loc.getProvincia());
+        PlanificadorRed.agregarLocalidad(
+                "C",
+                "C",
+                3,
+                3
+        );
 
-        assertEquals(-31.4167, loc.getLatitud(), 0.001);
-        assertEquals(-64.1833, loc.getLongitud(), 0.001);
+        assertEquals(
+                3,
+                PlanificadorRed
+                        .getLocalidades()
+                        .size()
+        );
     }
 
     @Test
-    public void testListaInicialmenteVacia() {
+    public void testGetLocalidadesNoNulo() {
 
-        assertTrue(PlanificadorRed.getLocalidades().isEmpty());
+        assertNotNull(
+                PlanificadorRed
+                        .getLocalidades()
+        );
     }
 
     @Test
-    public void testAgregarMultiplesLocalidades() {
+    public void testListaComienzaVacia() {
 
-        PlanificadorRed.agregarLocalidad(
-                "Buenos Aires",
-                "Buenos Aires",
-                -34.6037,
-                -58.3816
+        assertTrue(
+                PlanificadorRed
+                        .getLocalidades()
+                        .isEmpty()
         );
-
-        PlanificadorRed.agregarLocalidad(
-                "Mendoza",
-                "Mendoza",
-                -32.8895,
-                -68.8458
-        );
-
-        assertEquals(2, PlanificadorRed.getLocalidades().size());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testLatitudInvalida() {
+    public void testAgregarNombreVacio() {
+
+        PlanificadorRed.agregarLocalidad(
+                "",
+                "Buenos Aires",
+                -34,
+                -57
+        );
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAgregarProvinciaVacia() {
+
+        PlanificadorRed.agregarLocalidad(
+                "La Plata",
+                "",
+                -34,
+                -57
+        );
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAgregarLatitudInvalida() {
 
         PlanificadorRed.agregarLocalidad(
                 "Test",
@@ -87,13 +130,69 @@ public class PlanificadorTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testNombreVacio() {
+    public void testAgregarLongitudInvalida() {
 
         PlanificadorRed.agregarLocalidad(
-                "",
-                "Buenos Aires",
-                -34,
-                -57
+                "Test",
+                "Test",
+                -50,
+                500
+        );
+    }
+
+    @Test
+    public void testGuardarYRecuperarDatos() {
+
+        PlanificadorRed.agregarLocalidad(
+                "Cordoba",
+                "Cordoba",
+                -31.4,
+                -64.2
+        );
+
+        PlanificadorRed planificador =
+                new PlanificadorRed();
+
+        planificador.cargarDatos();
+
+        List<Localidad> lista =
+                PlanificadorRed
+                        .getLocalidades();
+
+        assertFalse(
+                lista.isEmpty()
+        );
+
+        assertEquals(
+                "Cordoba",
+                lista.get(0).getNombre()
+        );
+    }
+
+    @Test
+    public void testAgregarLocalidadesMantieneDatos() {
+
+        PlanificadorRed.agregarLocalidad(
+                "A",
+                "A",
+                1,
+                1
+        );
+
+        new PlanificadorRed();
+
+        PlanificadorRed.agregarLocalidad(
+                "B",
+                "B",
+                2,
+                2
+        );
+
+        assertEquals(
+                2,
+                PlanificadorRed
+                        .getLocalidades()
+                        .size()
         );
     }
 }

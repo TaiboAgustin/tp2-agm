@@ -13,15 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import logica.modelo.Localidad;
-
 public class PersistenciaENJson {
 	private static final Gson gson=new GsonBuilder().setPrettyPrinting().create();
 							// =========================
 									//Guardar
 							// =========================
 	public static void guardarLocalidades(List<Localidad>localidades,String archivo) {
-		List<LocalidadDTO>dtos =new ArrayList();
+		List<LocalidadDTO>dtos = new ArrayList<LocalidadDTO>();
 		for(Localidad loc : localidades ) {
 			dtos.add(convertirADTO(loc));
 		}
@@ -29,7 +27,7 @@ public class PersistenciaENJson {
 			gson.toJson(dtos,writer);
 		}
 		catch(IOException e){
-			e.printStackTrace();
+			throw new RuntimeException("Error al guardar el archivo");
 		}
 	
 			
@@ -51,8 +49,7 @@ public class PersistenciaENJson {
 				return localidades;
 			}
 			catch(IOException e ) {
-				e.printStackTrace();
-				return new ArrayList<>();
+				throw new RuntimeException("Error al cargar Localidades");
 			}
 		}	
 						 // =========================

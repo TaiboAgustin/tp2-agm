@@ -12,10 +12,9 @@ import logica.modelo.Localidad;
 
 public class PlanificadorRed {
 
-    private static List<Localidad> localidades;
+    private static List<Localidad> localidades = new ArrayList<>();
 
     public PlanificadorRed() {
-        localidades = new ArrayList<>();
     }
 
     public static void agregarLocalidad(

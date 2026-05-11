@@ -1,10 +1,7 @@
 package DTO.PERSISTENCIA;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,36 +11,44 @@ import DTO.PersistenciaENJson;
 import logica.modelo.Localidad;
 
 public class PersistenciaENJsonTest {
-	@Test
+
+    @Test
     public void testGuardarYCargarLocalidades() {
 
         String archivo = "localidades_test.json";
 
-        List<Localidad> lista = new ArrayList<>();
+        List<Localidad> lista =
+                new ArrayList<>();
 
-        lista.add(new Localidad(
-                "Buenos Aires",
-                "Buenos Aires",
-                -34.6,
-                -58.4
-        ));
-
-        lista.add(new Localidad(
-                "Cordoba",
-                "Cordoba",
-                -31.4,
-                -64.2
-        ));
-
-        PersistenciaENJson.guardarLocalidades(
-                lista,
-                archivo
+        lista.add(
+                new Localidad(
+                        "Buenos Aires",
+                        "Buenos Aires",
+                        -34.6,
+                        -58.4
+                )
         );
 
-        List<Localidad> cargadas =
-                PersistenciaENJson.cargarLocalidades(
+        lista.add(
+                new Localidad(
+                        "Cordoba",
+                        "Cordoba",
+                        -31.4,
+                        -64.2
+                )
+        );
+
+        PersistenciaENJson
+                .guardarLocalidades(
+                        lista,
                         archivo
                 );
+
+        List<Localidad> cargadas =
+                PersistenciaENJson
+                        .cargarLocalidades(
+                                archivo
+                        );
 
         assertNotNull(cargadas);
 
@@ -58,63 +63,65 @@ public class PersistenciaENJsonTest {
     @Test
     public void testGuardarListaVacia() {
 
-        String archivo = "localidades_vacias.json";
+        String archivo =
+                "lista_vacia.json";
 
         List<Localidad> lista =
                 new ArrayList<>();
 
-        PersistenciaENJson.guardarLocalidades(
-                lista,
-                archivo
-        );
-
-        List<Localidad> cargadas =
-                PersistenciaENJson.cargarLocalidades(
+        PersistenciaENJson
+                .guardarLocalidades(
+                        lista,
                         archivo
                 );
 
-        assertNotNull(cargadas);
-
-        assertTrue(cargadas.isEmpty());
-    }
-
-    @Test
-    public void testCargarArchivoInexistente() {
-
         List<Localidad> cargadas =
-                PersistenciaENJson.cargarLocalidades(
-                        "archivo_que_no_existe.json"
-                );
+                PersistenciaENJson
+                        .cargarLocalidades(
+                                archivo
+                        );
 
         assertNotNull(cargadas);
+
+        assertTrue(
+                cargadas.isEmpty()
+        );
     }
 
     @Test
     public void testGuardarUnaLocalidad() {
 
-        String archivo = "una_localidad.json";
+        String archivo =
+                "una_localidad.json";
 
         List<Localidad> lista =
                 new ArrayList<>();
 
-        lista.add(new Localidad(
-                "Mendoza",
-                "Mendoza",
-                -32.8,
-                -68.8
-        ));
-
-        PersistenciaENJson.guardarLocalidades(
-                lista,
-                archivo
+        lista.add(
+                new Localidad(
+                        "Mendoza",
+                        "Mendoza",
+                        -32.8,
+                        -68.8
+                )
         );
 
-        List<Localidad> cargadas =
-                PersistenciaENJson.cargarLocalidades(
+        PersistenciaENJson
+                .guardarLocalidades(
+                        lista,
                         archivo
                 );
 
-        assertEquals(1, cargadas.size());
+        List<Localidad> cargadas =
+                PersistenciaENJson
+                        .cargarLocalidades(
+                                archivo
+                        );
+
+        assertEquals(
+                1,
+                cargadas.size()
+        );
 
         assertEquals(
                 "Mendoza",
@@ -125,31 +132,40 @@ public class PersistenciaENJsonTest {
     @Test
     public void testDatosCorrectosDespuesDeCargar() {
 
-        String archivo = "datos_correctos.json";
+        String archivo =
+                "datos_correctos.json";
 
         List<Localidad> lista =
                 new ArrayList<>();
 
-        lista.add(new Localidad(
-                "Salta",
-                "Salta",
-                -24.7,
-                -65.4
-        ));
-
-        PersistenciaENJson.guardarLocalidades(
-                lista,
-                archivo
+        lista.add(
+                new Localidad(
+                        "Salta",
+                        "Salta",
+                        -24.7,
+                        -65.4
+                )
         );
 
-        List<Localidad> cargadas =
-                PersistenciaENJson.cargarLocalidades(
+        PersistenciaENJson
+                .guardarLocalidades(
+                        lista,
                         archivo
                 );
 
-        Localidad loc = cargadas.get(0);
+        List<Localidad> cargadas =
+                PersistenciaENJson
+                        .cargarLocalidades(
+                                archivo
+                        );
 
-        assertEquals("Salta", loc.getNombre());
+        Localidad loc =
+                cargadas.get(0);
+
+        assertEquals(
+                "Salta",
+                loc.getNombre()
+        );
 
         assertEquals(
                 "Salta",
@@ -172,7 +188,8 @@ public class PersistenciaENJsonTest {
     @Test
     public void testGuardarMuchasLocalidades() {
 
-        String archivo = "muchas_localidades.json";
+        String archivo =
+                "muchas_localidades.json";
 
         List<Localidad> lista =
                 new ArrayList<>();
@@ -189,29 +206,39 @@ public class PersistenciaENJsonTest {
             );
         }
 
-        PersistenciaENJson.guardarLocalidades(
-                lista,
-                archivo
-        );
-
-        List<Localidad> cargadas =
-                PersistenciaENJson.cargarLocalidades(
+        PersistenciaENJson
+                .guardarLocalidades(
+                        lista,
                         archivo
                 );
 
-        assertEquals(10, cargadas.size());
+        List<Localidad> cargadas =
+                PersistenciaENJson
+                        .cargarLocalidades(
+                                archivo
+                        );
+
+        assertEquals(
+                10,
+                cargadas.size()
+        );
     }
+
     @Test
     public void testSobrescribirArchivo() {
 
-        String archivo = "test.json";
+        String archivo =
+                "sobrescribir.json";
 
         List<Localidad> lista1 =
                 new ArrayList<>();
 
         lista1.add(
                 new Localidad(
-                        "A","B",1,2
+                        "A",
+                        "B",
+                        1,
+                        2
                 )
         );
 
@@ -226,7 +253,10 @@ public class PersistenciaENJsonTest {
 
         lista2.add(
                 new Localidad(
-                        "C","D",3,4
+                        "C",
+                        "D",
+                        3,
+                        4
                 )
         );
 
@@ -243,8 +273,44 @@ public class PersistenciaENJsonTest {
                         );
 
         assertEquals(
+                1,
+                cargadas.size()
+        );
+
+        assertEquals(
                 "C",
                 cargadas.get(0).getNombre()
         );
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testCargarArchivoInexistente() {
+
+        PersistenciaENJson
+                .cargarLocalidades(
+                        "archivo_que_no_existe.json"
+                );
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testGuardarRutaInvalida() {
+
+        List<Localidad> lista =
+                new ArrayList<>();
+
+        lista.add(
+                new Localidad(
+                        "Test",
+                        "Test",
+                        1,
+                        1
+                )
+        );
+
+        PersistenciaENJson
+                .guardarLocalidades(
+                        lista,
+                        "?:/ruta_invalida.json"
+                );
     }
 }
