@@ -7,8 +7,10 @@ import DTO.PersistenciaENJson;
 import logica.agm.AlgoritmoKruskal;
 import logica.agm.ResultadoAGM;
 import logica.modelo.Arista;
+import logica.modelo.GeneradorDeGrafo;
 import logica.modelo.Grafo;
 import logica.modelo.Localidad;
+import logica.modelo.ParametrosPrecio;
 
 public class PlanificadorRed {
 
@@ -50,13 +52,12 @@ public class PlanificadorRed {
     public static List<Localidad> getLocalidades() {
         return localidades;
     }
-   /* public List<ConexionVisual> generarConexionesVisuales() {
-    	// ResultadoAGM <Localidad> resultado = generarAGM();        ****metodo para generar el AGM
-
+    public static List<ConexionVisual> generarConexionesVisuales() {
+    	 ResultadoAGM <Localidad> resultado = calcularAGM();        
 		List<ConexionVisual> conexiones =
 		        new ArrayList<>();
 		
-		// for (Arista<Localidad> arista : resultado.getConexiones()) {		*** getConexiones para ese AGM
+		 for (Arista<Localidad> arista : resultado.getConexiones()) {		
 		
 		    ConexionVisual conexion =
 		            new ConexionVisual(
@@ -70,5 +71,24 @@ public class PlanificadorRed {
 		}
 		
 		return conexiones;
-} */
+    } 
+    public static ResultadoAGM<Localidad> calcularAGM() {
+
+        ParametrosPrecio parametros =new ParametrosPrecio(
+                        10,   // costo por km
+                        20,   // porcentaje aumento
+                        500   // costo fijo interprovincial
+                );
+
+        Grafo<Localidad> grafo =
+                GeneradorDeGrafo.construirGrafoCompleto(
+                        localidades,
+                        parametros
+                );
+
+        AlgoritmoKruskal<Localidad> kruskal =
+                new AlgoritmoKruskal<>();
+
+        return kruskal.calcular(grafo);
+    }
 }

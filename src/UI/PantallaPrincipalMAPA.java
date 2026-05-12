@@ -15,6 +15,7 @@ import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
 import Logica_Planificador.ConexionVisual;
 import Logica_Planificador.PlanificadorRed;
+import logica.agm.ResultadoAGM;
 import logica.modelo.Localidad;
 
 import javax.swing.JPanel;
@@ -34,7 +35,7 @@ public class PantallaPrincipalMAPA {
 	private JTextField datoProvincia;
 	private JTextField datoLatitud;
 	private JTextField datoLongitud;
-	private JLabel lblResultado;
+	private JLabel lblResultado = new JLabel();
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 	/**
@@ -248,7 +249,7 @@ public class PantallaPrincipalMAPA {
 		public void actionPerformed(ActionEvent e) {
 			PlanificadorRed.agregarLocalidad(datoNombre.getText(),datoProvincia.getText(),Double.parseDouble(datoLatitud.getText()),Double.parseDouble(datoLongitud.getText()));
 			mapa.removeAllMapMarkers();
-			cargarLocalidadesEnMapa();
+			cargarLocalidadesEnMapa();	
 		}
 	}
 	private class SwingAction_1 extends AbstractAction {
@@ -257,10 +258,15 @@ public class PantallaPrincipalMAPA {
 			putValue(SHORT_DESCRIPTION, "AGM?");
 		}
 		public void actionPerformed(ActionEvent e) { 
-			//resultado=PlanificadorRed.generarAGM(
-			//dibujarAGM(resultado));   ********** desbloquear esto cuando tengan el generador de AGM
-			//lblResultado.setText(resultado.getCosto);
-			System.out.println("GeneroAGM");
+			List<ConexionVisual> conexiones= PlanificadorRed.generarConexionesVisuales();
+			dibujarAGM(conexiones);
+			ResultadoAGM<Localidad> resultado =
+		            PlanificadorRed.calcularAGM();
+
+		    lblResultado.setText(
+		            "Costo total: " +
+		            resultado.getCostoTotal()
+		    );
 		}
 	}
 }

@@ -10,5 +10,29 @@
     "provincia": "Cordoba",
     "latitud": -31.4,
     "longitud": -64.2
+  },
+  {
+    "nombre": "Rosario",
+    "provincia": "Santa Fe",
+    "latitud": -32.9442,
+    "longitud": -60.6505
+  },
+  {
+    "nombre": "Mendoza",
+    "provincia": "Mendoza",
+    "latitud": -32.8895,
+    "longitud": -68.8458
+  },
+  {
+    "nombre": "San Miguel de Tucumán",
+    "provincia": "Tucuman",
+    "latitud": -26.8083,
+    "longitud": -65.2176
+  },
+  {
+    "nombre": "Resistencia",
+    "provincia": "Chaco",
+    "latitud": -27.4514,
+    "longitud": -58.9867
   }
 ]
