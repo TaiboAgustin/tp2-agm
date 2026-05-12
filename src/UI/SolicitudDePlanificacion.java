@@ -129,9 +129,9 @@ public class SolicitudDePlanificacion extends JFrame {
 
     void crearParametrosPrecio() {
         try {
-            float costoKm               = convertToFloat(numCostoKm);
-            float tarifaInterprovincial = convertToFloat(numTarifaInterprovincial);
-            float costoDistanciasLargas = convertToFloat(numCostoDistanciasLargas);
+            double costoKm               = convertToDouble(numCostoKm);
+            double tarifaInterprovincial = convertToDouble(numTarifaInterprovincial);
+            double costoDistanciasLargas = convertToDouble(numCostoDistanciasLargas);
 
             this.parametros = new ParametrosPrecio(costoKm, tarifaInterprovincial, costoDistanciasLargas);
 
@@ -157,7 +157,7 @@ public class SolicitudDePlanificacion extends JFrame {
     }
 
 
-    float convertToFloat(JTextField text) {
-        return Float.parseFloat(text.getText().trim());
+    double convertToDouble(JTextField text) {
+    	return Double.valueOf(text.getText().trim());
     }
 }
