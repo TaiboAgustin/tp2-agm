@@ -258,15 +258,21 @@ public class PantallaPrincipalMAPA {
 			putValue(SHORT_DESCRIPTION, "AGM?");
 		}
 		public void actionPerformed(ActionEvent e) { 
-			List<ConexionVisual> conexiones= PlanificadorRed.generarConexionesVisuales();
+			ResultadoAGM<Localidad> resultado = PlanificadorRed.calcularAGM();
+			List<ConexionVisual> conexiones= PlanificadorRed.generarConexionesVisuales(resultado);
+			mapa.removeAllMapPolygons();
 			dibujarAGM(conexiones);
-			ResultadoAGM<Localidad> resultado =
-		            PlanificadorRed.calcularAGM();
-
+		
 		    lblResultado.setText(
 		            "Costo total: " +
 		            resultado.getCostoTotal()
 		    );
 		}
+	}
+	public void mostrarVentana() {
+		PantallaPrincipalMAPA window = new PantallaPrincipalMAPA();
+		window.frame.setVisible(true);
+		// TODO Auto-generated method stub
+		
 	}
 }

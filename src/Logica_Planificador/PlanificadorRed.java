@@ -15,7 +15,7 @@ import logica.modelo.ParametrosPrecio;
 public class PlanificadorRed {
 
     private static List<Localidad> localidades = new ArrayList<>();
-
+    private static ParametrosPrecio parametros;
     public PlanificadorRed() {
     }
 
@@ -39,25 +39,24 @@ public class PlanificadorRed {
     public static void guardarDatos() {
         PersistenciaENJson.guardarLocalidades(
                 localidades,
-                "localidades_test.json"
+                "localidades.json"
         );
     }
 
     public void cargarDatos() {
         localidades = PersistenciaENJson.cargarLocalidades(
-                "localidades_test.json"
+                "localidades.json"
         );
     }
 
     public static List<Localidad> getLocalidades() {
         return localidades;
     }
-    public static List<ConexionVisual> generarConexionesVisuales() {
-    	 ResultadoAGM <Localidad> resultado = calcularAGM();        
+    public static List<ConexionVisual> generarConexionesVisuales(ResultadoAGM<Localidad> resultado2) {       
 		List<ConexionVisual> conexiones =
 		        new ArrayList<>();
 		
-		 for (Arista<Localidad> arista : resultado.getConexiones()) {		
+		 for (Arista<Localidad> arista : resultado2.getConexiones()) {		
 		
 		    ConexionVisual conexion =
 		            new ConexionVisual(
@@ -73,13 +72,7 @@ public class PlanificadorRed {
 		return conexiones;
     } 
     public static ResultadoAGM<Localidad> calcularAGM() {
-
-        ParametrosPrecio parametros =new ParametrosPrecio(
-                        10,   // costo por km
-                        20,   // porcentaje aumento
-                        500   // costo fijo interprovincial
-                );
-
+    	
         Grafo<Localidad> grafo =
                 GeneradorDeGrafo.construirGrafoCompleto(
                         localidades,
@@ -90,5 +83,14 @@ public class PlanificadorRed {
                 new AlgoritmoKruskal<>();
 
         return kruskal.calcular(grafo);
+    }
+    public static void configurarParametros(
+            ParametrosPrecio p) {
+
+        parametros = p;
+    }
+    public static ParametrosPrecio getParametros() {
+
+        return parametros;
     }
 }
