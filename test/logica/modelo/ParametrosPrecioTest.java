@@ -19,18 +19,18 @@ public class ParametrosPrecioTest {
 
     @Test
     public void seCreaCorrectamenteConValoresMuyPequenosPositivos() {
-        ParametrosPrecio p = new ParametrosPrecio(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
-        assertEquals(Float.MIN_VALUE, p.getCostoPorKm(),                    0.0d);
-        assertEquals(Float.MIN_VALUE, p.getCostoFijoInterprovincial(),         0.0d);
-        assertEquals(Float.MIN_VALUE, p.getPorcentajeAumento(), 0.0f);
+        ParametrosPrecio p = new ParametrosPrecio(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
+        assertEquals(Double.MIN_VALUE, p.getCostoPorKm(),                    0.0d);
+        assertEquals(Double.MIN_VALUE, p.getCostoFijoInterprovincial(),         0.0d);
+        assertEquals(Double.MIN_VALUE, p.getPorcentajeAumento(), 0.0f);
     }
 
     @Test
     public void seCreaCorrectamenteConValoresMuyGrandes() {
-        ParametrosPrecio p = new ParametrosPrecio(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
-        assertEquals(Float.MAX_VALUE, p.getCostoPorKm(),                    0.0d);
-        assertEquals(Float.MAX_VALUE, p.getCostoFijoInterprovincial(),         0.0d);
-        assertEquals(Float.MAX_VALUE, p.getPorcentajeAumento(), 0.0d);
+        ParametrosPrecio p = new ParametrosPrecio(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        assertEquals(Double.MAX_VALUE, p.getCostoPorKm(),                    0.0d);
+        assertEquals(Double.MAX_VALUE, p.getCostoFijoInterprovincial(),         0.0d);
+        assertEquals(Double.MAX_VALUE, p.getPorcentajeAumento(), 0.0d);
     }
 
     @Test(expected = IllegalArgumentException.class)
