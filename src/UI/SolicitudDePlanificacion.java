@@ -135,8 +135,6 @@ public class SolicitudDePlanificacion extends JFrame {
 
             this.parametros = new ParametrosPrecio(costoKm, tarifaInterprovincial, costoDistanciasLargas);
 
-            mostrarMensaje("Planificación generada correctamente.", "Éxito");
-
         } catch (NumberFormatException ex) {
         	mostrarMensaje("Los costos deben ser números válidos.", "Error");
         }
