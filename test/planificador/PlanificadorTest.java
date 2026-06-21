@@ -89,11 +89,7 @@ public class PlanificadorTest {
     @Test
     public void testListaComienzaVacia() {
 
-        assertTrue(
-                PlanificadorRed
-                        .getLocalidades()
-                        .isEmpty()
-        );
+        assertTrue(PlanificadorRed.getLocalidades().isEmpty());
     }
 
     @Test(expected = IllegalArgumentException.class)

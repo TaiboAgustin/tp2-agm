@@ -84,13 +84,43 @@ public class PlanificadorRed {
 
         return kruskal.calcular(grafo);
     }
-    public static void configurarParametros(
-            ParametrosPrecio p) {
+    
+    public static void configurarParametros(double costoKm,double tarifaInterprovincial,double porcentajeAumento) {
 
-        parametros = p;
+        parametros = new ParametrosPrecio(costoKm , tarifaInterprovincial,porcentajeAumento );
     }
+  
+    
     public static ParametrosPrecio getParametros() {
 
         return parametros;
     }
+    
+    public static void reemplazarLocalidades(
+            List<Localidad> nuevasLocalidades) {
+
+        localidades.clear();
+        localidades.addAll(nuevasLocalidades);
+    }
+    
+    public static void resetear() {
+        localidades.clear();
+        parametros = null;
+    }
+
+	public static boolean EmpezarPlanificacion(List<Localidad> listLocalidades) {
+		  if (parametros == null) return false;
+
+          if (listLocalidades.isEmpty()) {
+              return false;
+          }
+
+          PlanificadorRed.getLocalidades().clear();
+          for (Localidad loc : listLocalidades) {
+              PlanificadorRed.agregarLocalidad(
+                      loc.getNombre(), loc.getProvincia(),
+                      loc.getLatitud(), loc.getLongitud()); 
+          }
+		return true;
+	}
 }

@@ -30,7 +30,7 @@ public class SolicitudDePlanificacion extends JFrame {
     private static final Color BORDER   = new Color(58, 58, 60);
     private static final Color GRAY     = new Color(129, 131, 132);
 
-    private ParametrosPrecio parametros;
+    
     private JTextField numCostoKm;
     private JTextField numTarifaInterprovincial;
     private JTextField numCostoDistanciasLargas;
@@ -163,7 +163,7 @@ public class SolicitudDePlanificacion extends JFrame {
         btnGenerar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 crearParametrosPrecio();
-                crearPlanificacion();
+                crearPlanificacion(listaLocalidades);
             }
         });
 
@@ -193,31 +193,21 @@ public class SolicitudDePlanificacion extends JFrame {
             double costoKm               = convertToDouble(numCostoKm);
             double tarifaInterprovincial = convertToDouble(numTarifaInterprovincial);
             double costoDistanciasLargas = convertToDouble(numCostoDistanciasLargas);
-            this.parametros = new ParametrosPrecio(costoKm, tarifaInterprovincial, costoDistanciasLargas);
+            PlanificadorRed.configurarParametros(costoKm,tarifaInterprovincial,costoDistanciasLargas);
         } catch (NumberFormatException ex) {
             mostrarMensaje("Los costos deben ser números válidos.", "Error");
         }
     }
 
-    private void crearPlanificacion() {
-        if (parametros == null) return;
-
-        if (listaLocalidades.isEmpty()) {
-            mostrarMensaje("Debe agregar al menos una localidad.", "Error");
-            return;
-        }
-
-        PlanificadorRed.getLocalidades().clear();
-        for (Localidad loc : listaLocalidades) {
-            PlanificadorRed.agregarLocalidad(
-                    loc.getNombre(), loc.getProvincia(),
-                    loc.getLatitud(), loc.getLongitud());
-        }
-        PlanificadorRed.configurarParametros(parametros);
-
+    private void crearPlanificacion(List<Localidad>listLocalidades) {
+    	if(PlanificadorRed.EmpezarPlanificacion(listLocalidades)) {		
         PantallaPrincipalMAPA mapa = new PantallaPrincipalMAPA();
         mapa.mostrarVentana();
         dispose();
+        }
+    	else {
+    		mostrarMensaje("Problema a la hora de Iniciar Planificacion","Error");
+    	}
     }
 
     protected void mostrarMensaje(String mensaje, String tipo) {
