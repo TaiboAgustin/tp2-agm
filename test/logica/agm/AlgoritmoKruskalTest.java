@@ -35,29 +35,29 @@ public class AlgoritmoKruskalTest {
     public void resultadoConDosNodosTieneUnaArista() {
         Arista<Localidad> a = new Arista<>(buenosAires, rosario, 300.0);
         Grafo<Localidad> grafo = new Grafo<>(Arrays.asList(buenosAires, rosario), Arrays.asList(a));
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        assertEquals(1, resultado.getConexiones().size());
+        Grafo<Localidad> agm = kruskal.calcular(grafo);
+        assertEquals(1, agm.getAristas().size());
     }
 
     @Test
     public void resultadoTieneNMenosUnaAristas() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        assertEquals(3, resultado.getConexiones().size());
+        Grafo<Localidad> agm = kruskal.calcular(grafo);
+        assertEquals(3, agm.getAristas().size());
     }
 
     @Test
     public void costoTotalEsElMinimo() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        assertEquals(900.0, resultado.getCostoTotal(), 0.001);
+        Grafo<Localidad> agm = kruskal.calcular(grafo);
+        assertEquals(900.0, agm.getCostoTotal(), 0.001);
     }
 
     @Test
     public void seSeleccionanLasAristasDeMenorCosto() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        List<Arista<Localidad>> conexiones = resultado.getConexiones();
+        Grafo<Localidad> agm = kruskal.calcular(grafo);
+        List<Arista<Localidad>> conexiones = agm.getAristas();
 
         assertTrue(contieneArista(conexiones, rosario, cordoba, 200.0));
         assertTrue(contieneArista(conexiones, buenosAires, rosario, 300.0));
