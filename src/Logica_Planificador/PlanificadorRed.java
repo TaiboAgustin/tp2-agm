@@ -19,21 +19,16 @@ public class PlanificadorRed {
     public PlanificadorRed() {
     }
 
-    public static void agregarLocalidad(
-            String nombre,
-            String provincia,
-            double latitud,
-            double longitud) {
-
-        Localidad loc = new Localidad(
-                nombre,
-                provincia,
-                latitud,
-                longitud
-        );
-
+    public static boolean agregarLocalidad(String nombre,String provincia,double latitud,double longitud) {
+    	for (Localidad loc :localidades ) {
+    		if(loc.getNombre().equalsIgnoreCase(nombre) && loc.getProvincia().equalsIgnoreCase(provincia)) {
+    			return false;
+    		}
+    	}
+        Localidad loc = new Localidad(nombre,provincia,latitud,longitud);
         localidades.add(loc);
         guardarDatos();
+        return true;
     }
 
     public static void guardarDatos() {
@@ -50,7 +45,7 @@ public class PlanificadorRed {
     }
 
     public static List<Localidad> getLocalidades() {
-        return localidades;
+        return new ArrayList<>(localidades);
     }
     public static List<ConexionVisual> generarConexionesVisuales(ResultadoAGM<Localidad> resultado2) {       
 		List<ConexionVisual> conexiones =
@@ -108,19 +103,12 @@ public class PlanificadorRed {
         parametros = null;
     }
 
-	public static boolean EmpezarPlanificacion(List<Localidad> listLocalidades) {
-		  if (parametros == null) return false;
-
-          if (listLocalidades.isEmpty()) {
-              return false;
-          }
-
-          PlanificadorRed.getLocalidades().clear();
-          for (Localidad loc : listLocalidades) {
-              PlanificadorRed.agregarLocalidad(
-                      loc.getNombre(), loc.getProvincia(),
-                      loc.getLatitud(), loc.getLongitud()); 
-          }
-		return true;
+	public static boolean empezarPlanificacion(double costoKm, double tarifaInternacional, double costoDistanciasLargas) {
+		configurarParametros(costoKm,tarifaInternacional,costoDistanciasLargas);
+		return !localidades.isEmpty();
+	}
+	public static void limpiarLocalidades() {
+		localidades.clear();
+		guardarDatos();
 	}
 }

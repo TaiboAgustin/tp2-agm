@@ -35,7 +35,6 @@ public class SolicitudDePlanificacion extends JFrame {
     private JTextField numTarifaInterprovincial;
     private JTextField numCostoDistanciasLargas;
 
-    private List<Localidad> listaLocalidades = new ArrayList<>();
     private DefaultListModel<String> listModel = new DefaultListModel<>();
 
     public SolicitudDePlanificacion() {
@@ -134,8 +133,10 @@ public class SolicitudDePlanificacion extends JFrame {
                 dialogo.setVisible(true);
                 Localidad nueva = dialogo.getLocalidadCreada();
                 if (nueva != null) {
-                    listaLocalidades.add(nueva);
-                    listModel.addElement(nueva.getNombre() + " — " + nueva.getProvincia());
+                	if(PlanificadorRed.agregarLocalidad(nueva.getNombre(),nueva.getProvincia(),nueva.getLatitud() ,nueva.getLongitud())) {
+                		listModel.addElement(nueva.getNombre() + " — " + nueva.getProvincia());
+                	}
+                   mostrarMensaje("la localidad ya existe","Error");
                 }
             }
         });
@@ -162,8 +163,8 @@ public class SolicitudDePlanificacion extends JFrame {
         btnGenerar.setBounds(480, 540, 210, 36);
         btnGenerar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                crearParametrosPrecio();
-                crearPlanificacion(listaLocalidades);
+                
+                crearPlanificacion(numCostoKm,numTarifaInterprovincial,numCostoDistanciasLargas);
             }
         });
 
@@ -175,32 +176,22 @@ public class SolicitudDePlanificacion extends JFrame {
     private void cargarLocalidadesGuardadas() {
         new PlanificadorRed().cargarDatos();
         for (Localidad loc : PlanificadorRed.getLocalidades()) {
-            listaLocalidades.add(loc);
+            
             listModel.addElement(loc.getNombre() + " — " + loc.getProvincia());
         }
     }
 
     private void limpiarCampos() {
-        listaLocalidades.clear();
+        PlanificadorRed.limpiarLocalidades();
         listModel.clear();
         numCostoKm.setText("");
         numTarifaInterprovincial.setText("");
         numCostoDistanciasLargas.setText("");
     }
 
-    void crearParametrosPrecio() {
-        try {
-            double costoKm               = convertToDouble(numCostoKm);
-            double tarifaInterprovincial = convertToDouble(numTarifaInterprovincial);
-            double costoDistanciasLargas = convertToDouble(numCostoDistanciasLargas);
-            PlanificadorRed.configurarParametros(costoKm,tarifaInterprovincial,costoDistanciasLargas);
-        } catch (NumberFormatException ex) {
-            mostrarMensaje("Los costos deben ser números válidos.", "Error");
-        }
-    }
 
-    private void crearPlanificacion(List<Localidad>listLocalidades) {
-    	if(PlanificadorRed.EmpezarPlanificacion(listLocalidades)) {		
+    private void crearPlanificacion(JTextField costoKm,JTextField tarifaInterprovincial,JTextField costoDistanciasLargas) {
+    	if(PlanificadorRed.empezarPlanificacion(convertToDouble(costoKm),convertToDouble(tarifaInterprovincial),convertToDouble(costoDistanciasLargas))) {		
         PantallaPrincipalMAPA mapa = new PantallaPrincipalMAPA();
         mapa.mostrarVentana();
         dispose();

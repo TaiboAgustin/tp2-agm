@@ -118,5 +118,11 @@
     "provincia": "Tierra del Fuego",
     "latitud": -54.8019,
     "longitud": -68.303
+  },
+  {
+    "nombre": "Los ralos",
+    "provincia": "TUCUMAN",
+    "latitud": -26.887,
+    "longitud": -65.0007
   }
 ]
