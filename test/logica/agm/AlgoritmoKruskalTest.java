@@ -35,29 +35,34 @@ public class AlgoritmoKruskalTest {
     public void resultadoConDosNodosTieneUnaArista() {
         Arista<Localidad> a = new Arista<>(buenosAires, rosario, 300.0);
         Grafo<Localidad> grafo = new Grafo<>(Arrays.asList(buenosAires, rosario), Arrays.asList(a));
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        assertEquals(1, resultado.getConexiones().size());
+        
+        // Ahora devuelve un Grafo
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        // Usamos getAristas() en vez de getConexiones()
+        assertEquals(1, resultado.getAristas().size());
     }
 
     @Test
     public void resultadoTieneNMenosUnaAristas() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        assertEquals(3, resultado.getConexiones().size());
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        assertEquals(3, resultado.getAristas().size());
     }
 
     @Test
     public void costoTotalEsElMinimo() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        assertEquals(900.0, resultado.getCostoTotal(), 0.001);
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        
+        // Usamos el método auxiliar para sumar los pesos
+        assertEquals(900.0, calcularCostoTotal(resultado), 0.001);
     }
 
     @Test
     public void seSeleccionanLasAristasDeMenorCosto() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        List<Arista<Localidad>> conexiones = resultado.getConexiones();
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        List<Arista<Localidad>> conexiones = resultado.getAristas();
 
         assertTrue(contieneArista(conexiones, rosario, cordoba, 200.0));
         assertTrue(contieneArista(conexiones, buenosAires, rosario, 300.0));
@@ -76,9 +81,17 @@ public class AlgoritmoKruskalTest {
         return new Grafo<>(Arrays.asList(buenosAires, rosario, cordoba, mendoza), aristas);
     }
 
-    private boolean contieneArista(List<Arista<Localidad>> aristas, Localidad origen, Localidad destino, double costo) {
+    
+    private boolean contieneArista(List<Arista<Localidad>> aristas, Localidad v1, Localidad v2, double peso) {
         return aristas.stream().anyMatch(a ->
-            a.getOrigen().equals(origen) && a.getDestino().equals(destino) && a.getCosto() == costo
+            ((a.getVertice1().equals(v1) && a.getVertice2().equals(v2)) ||
+             (a.getVertice1().equals(v2) && a.getVertice2().equals(v1)))
+            && a.getPeso() == peso
         );
+    }
+
+    // Método auxiliar para reemplazar resultado.getCostoTotal()
+    private double calcularCostoTotal(Grafo<Localidad> grafo) {
+        return grafo.getAristas().stream().mapToDouble(Arista::getPeso).sum();
     }
 }

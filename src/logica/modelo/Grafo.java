@@ -14,9 +14,9 @@ public class Grafo<T> {
 
         int n = nodos.size();
         int aristasEsperadas = n * (n - 1) / 2;
-        if (aristas == null || aristas.size() != aristasEsperadas)
+       /* if (aristas == null || aristas.size() != aristasEsperadas)
             throw new IllegalArgumentException("El grafo debe ser completo: se esperaban " + aristasEsperadas + " aristas");
-
+*/
         this.nodos = nodos;
         this.aristas = aristas;
     }

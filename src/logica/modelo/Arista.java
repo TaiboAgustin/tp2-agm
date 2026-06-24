@@ -2,26 +2,32 @@ package logica.modelo;
 
 public class Arista<T> {
 
-    private final T origen;
-    private final T destino;
-    private final double costo;
+    private final T vertice1;
+    private final T vertice2;
+    private final double peso;
 
-    public Arista(T origen, T destino, double costo) {
-        if (origen == null)
-            throw new IllegalArgumentException("El origen no puede ser nulo");
-        if (destino == null)
-            throw new IllegalArgumentException("El destino no puede ser nulo");
-        if (origen.equals(destino))
-            throw new IllegalArgumentException("El origen y el destino no pueden ser el mismo nodo");
-        if (costo <= 0)
-            throw new IllegalArgumentException("El costo debe ser mayor a 0");
+    public Arista(T vertice1, T vertice2, double peso) {
+        if (vertice1 == null)
+            throw new IllegalArgumentException("El vértice 1 no puede ser nulo");
+        if (vertice2 == null)
+            throw new IllegalArgumentException("El vértice 2 no puede ser nulo");
+        if (vertice1.equals(vertice2))
+            throw new IllegalArgumentException("Los vértices no pueden ser el mismo nodo");
+        
+        // Se elimina la validación (peso <= 0) para mantener la clase genérica y reutilizable.
 
-        this.origen = origen;
-        this.destino = destino;
-        this.costo = costo;
+        this.vertice1 = vertice1;
+        this.vertice2 = vertice2;
+        this.peso = peso;
     }
 
-    public T getOrigen() { return origen; }
-    public T getDestino() { return destino; }
-    public double getCosto() { return costo; }
+    public T getVertice1() { 
+    	return vertice1; 
+    	}
+    public T getVertice2() { 
+    	return vertice2; 
+    	}
+    public double getPeso() { 
+    	return peso; 
+    	}
 }

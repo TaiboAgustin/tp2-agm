@@ -10,13 +10,15 @@ import logica.modelo.Grafo;
 
 public class AlgoritmoKruskal<T> {
 
-    public ResultadoAGM<T> calcular(Grafo<T> grafo) {
+    public Grafo<T> calcular(Grafo<T> grafo) {
         if (grafo == null)
             throw new IllegalArgumentException("El grafo no puede ser nulo");
 
         List<T> nodos = grafo.getNodos();
         List<Arista<T>> aristas = new ArrayList<>(grafo.getAristas());
-        aristas.sort(Comparator.comparingDouble(Arista::getCosto));
+        
+        // Usamos el nuevo método getPeso()
+        aristas.sort(Comparator.comparingDouble(Arista::getPeso));
 
         Map<T, Integer> indice = new HashMap<>();
         for (int i = 0; i < nodos.size(); i++)
@@ -26,14 +28,15 @@ public class AlgoritmoKruskal<T> {
         List<Arista<T>> seleccionadas = new ArrayList<>();
 
         for (Arista<T> arista : aristas) {
-            int u = indice.get(arista.getOrigen());
-            int v = indice.get(arista.getDestino());
+            int u = indice.get(arista.getVertice1());
+            int v = indice.get(arista.getVertice2());
             if (!uf.mismoGrupo(u, v)) {
                 seleccionadas.add(arista);
                 uf.union(u, v);
             }
         }
 
-        return new ResultadoAGM<>(seleccionadas);
+        // Devolvemos directamente un objeto Grafo, como pidió el profe
+        return new Grafo<>(nodos, seleccionadas);
     }
 }

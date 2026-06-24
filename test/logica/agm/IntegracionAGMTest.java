@@ -36,8 +36,8 @@ public class IntegracionAGMTest {
             Arrays.asList(buenosAires, rosario),
             Arrays.asList(new Arista<>(buenosAires, rosario, 300.0))
         );
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        assertEquals(1, resultado.getConexiones().size());
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        assertEquals(1, resultado.getAristas().size());
     }
 
     @Test
@@ -48,21 +48,21 @@ public class IntegracionAGMTest {
             new Arista<>(buenosAires, cordoba, 10.0)
         );
         Grafo<Localidad> grafo = new Grafo<>(Arrays.asList(buenosAires, rosario, cordoba), aristas);
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
 
-        assertEquals(3.0, resultado.getCostoTotal(), 0.001);
-        assertFalse(contieneArista(resultado.getConexiones(), buenosAires, cordoba));
+        assertEquals(3.0, calcularCostoTotal(resultado), 0.001);
+        assertFalse(contieneArista(resultado.getAristas(), buenosAires, cordoba));
     }
 
     @Test
     public void todosLosNodosAparecenEnElResultado() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
 
         Set<Localidad> nodosEnResultado = new HashSet<>();
-        for (Arista<Localidad> a : resultado.getConexiones()) {
-            nodosEnResultado.add(a.getOrigen());
-            nodosEnResultado.add(a.getDestino());
+        for (Arista<Localidad> a : resultado.getAristas()) {
+            nodosEnResultado.add(a.getVertice1());
+            nodosEnResultado.add(a.getVertice2());
         }
 
         assertTrue(nodosEnResultado.contains(buenosAires));
@@ -74,18 +74,17 @@ public class IntegracionAGMTest {
     @Test
     public void costoDelAgmEsMenorQueArbolAlternativo() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
 
-        // árbol alternativo: BsAs-Córdoba (700) + BsAs-Rosario (300) + BsAs-Mendoza (900) = 1900
         double costoAlternativo = 700.0 + 300.0 + 900.0;
-        assertTrue(resultado.getCostoTotal() < costoAlternativo);
+        assertTrue(calcularCostoTotal(resultado) < costoAlternativo);
     }
 
     @Test
     public void agmConCincoLocalidadesTieneCuatroConexiones() {
         Grafo<Localidad> grafo = grafoCompleto5Nodos();
-        ResultadoAGM<Localidad> resultado = kruskal.calcular(grafo);
-        assertEquals(4, resultado.getConexiones().size());
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        assertEquals(4, resultado.getAristas().size());
     }
 
     private Grafo<Localidad> grafoCompleto4Nodos() {
@@ -116,9 +115,14 @@ public class IntegracionAGMTest {
         return new Grafo<>(Arrays.asList(buenosAires, rosario, cordoba, mendoza, laPlata), aristas);
     }
 
-    private boolean contieneArista(List<Arista<Localidad>> aristas, Localidad origen, Localidad destino) {
+    private boolean contieneArista(List<Arista<Localidad>> aristas, Localidad v1, Localidad v2) {
         return aristas.stream().anyMatch(a ->
-            a.getOrigen().equals(origen) && a.getDestino().equals(destino)
+            (a.getVertice1().equals(v1) && a.getVertice2().equals(v2)) ||
+            (a.getVertice1().equals(v2) && a.getVertice2().equals(v1))
         );
+    }
+
+    private double calcularCostoTotal(Grafo<Localidad> grafo) {
+        return grafo.getAristas().stream().mapToDouble(Arista::getPeso).sum();
     }
 }

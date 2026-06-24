@@ -11,33 +11,35 @@ public class AristaTest {
     @Test
     public void seCreaCorrectamente() {
         Arista<Localidad> a = new Arista<>(buenosAires, rosario, 1000.0);
-        assertEquals(buenosAires, a.getOrigen());
-        assertEquals(rosario, a.getDestino());
-        assertEquals(1000.0, a.getCosto(), 0.001);
+        assertEquals(buenosAires, a.getVertice1());
+        assertEquals(rosario, a.getVertice2());
+        assertEquals(1000.0, a.getPeso(), 0.001);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void origenNuloLanzaExcepcion() {
+    public void vertice1NuloLanzaExcepcion() {
         new Arista<>(null, rosario, 1000.0);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void destinoNuloLanzaExcepcion() {
+    public void vertice2NuloLanzaExcepcion() {
         new Arista<>(buenosAires, null, 1000.0);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void origenIgualDestinoLanzaExcepcion() {
+    public void verticesIgualesLanzaExcepcion() {
         new Arista<>(buenosAires, buenosAires, 1000.0);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void costoNegativoLanzaExcepcion() {
-        new Arista<>(buenosAires, rosario, -1.0);
+    @Test
+    public void aceptaPesoNegativo() {
+        Arista<Localidad> a = new Arista<>(buenosAires, rosario, -1.0);
+        assertEquals(-1.0, a.getPeso(), 0.001);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void costoCeroLanzaExcepcion() {
-        new Arista<>(buenosAires, rosario, 0.0);
+    @Test
+    public void aceptaPesoCero() {
+        Arista<Localidad> a = new Arista<>(buenosAires, rosario, 0.0);
+        assertEquals(0.0, a.getPeso(), 0.001);
     }
 }
