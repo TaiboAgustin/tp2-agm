@@ -18,24 +18,22 @@ public class PlanificadorRed {
     public PlanificadorRed() {
     }
 
-    public static void agregarLocalidad(
-            String nombre,
-            String provincia,
-            double latitud,
-            double longitud) {
+    public static boolean agregarLocalidad(String nombre, String provincia,double latitud,double longitud) {
+        if (existeLocalidad(nombre, provincia)) {
+            return false;
+        }
 
-        Localidad loc = new Localidad(
-                nombre,
-                provincia,
-                latitud,
-                longitud
-        );
-
-        localidades.add(loc);
+        localidades.add(new Localidad(nombre,provincia,latitud,longitud));
         guardarDatos();
+        return true;
     }
-
+    private static boolean existeLocalidad(String nombre,String provincia) {
+    	
+    	return localidades.stream().anyMatch(l ->l.getNombre().equalsIgnoreCase(nombre) && l.getProvincia().equalsIgnoreCase(provincia));
+    	
+    }
     public static void guardarDatos() {
+    	
         PersistenciaENJson.guardarLocalidades(
                 localidades,
                 "localidades.json"
@@ -43,13 +41,16 @@ public class PlanificadorRed {
     }
 
     public void cargarDatos() {
+    	
         localidades = PersistenciaENJson.cargarLocalidades(
                 "localidades.json"
         );
     }
 
     public static List<Localidad> getLocalidades() {
-        return localidades;
+    	
+        return new ArrayList<>(localidades);
+        
     }
     public static List<ConexionVisual> generarConexionesVisuales(Grafo<Localidad> resultado2) {
 		List<ConexionVisual> conexiones =
@@ -83,13 +84,36 @@ public class PlanificadorRed {
 
         return kruskal.calcular(grafo);
     }
-    public static void configurarParametros(
-            ParametrosPrecio p) {
+    
+    public static void configurarParametros(double costoKm,double tarifaInterprovincial,double porcentajeAumento) {
 
-        parametros = p;
+        parametros = new ParametrosPrecio(costoKm , tarifaInterprovincial,porcentajeAumento );
     }
+  
+    
     public static ParametrosPrecio getParametros() {
 
         return parametros;
     }
+    
+    public static void reemplazarLocalidades(
+            List<Localidad> nuevasLocalidades) {
+
+        localidades.clear();
+        localidades.addAll(nuevasLocalidades);
+    }
+    
+    public static void resetear() {
+        localidades.clear();
+        parametros = null;
+    }
+
+	public static boolean empezarPlanificacion(double costoKm, double tarifaInternacional, double costoDistanciasLargas) {
+		configurarParametros(costoKm,tarifaInternacional,costoDistanciasLargas);
+		return !localidades.isEmpty();
+	}
+	public static void limpiarLocalidades() {
+		localidades.clear();
+		guardarDatos();
+	}
 }
