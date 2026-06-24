@@ -30,12 +30,11 @@ public class SolicitudDePlanificacion extends JFrame {
     private static final Color BORDER   = new Color(58, 58, 60);
     private static final Color GRAY     = new Color(129, 131, 132);
 
-    private ParametrosPrecio parametros;
+    
     private JTextField numCostoKm;
     private JTextField numTarifaInterprovincial;
     private JTextField numCostoDistanciasLargas;
 
-    private List<Localidad> listaLocalidades = new ArrayList<>();
     private DefaultListModel<String> listModel = new DefaultListModel<>();
 
     public SolicitudDePlanificacion() {
@@ -134,8 +133,12 @@ public class SolicitudDePlanificacion extends JFrame {
                 dialogo.setVisible(true);
                 Localidad nueva = dialogo.getLocalidadCreada();
                 if (nueva != null) {
-                    listaLocalidades.add(nueva);
-                    listModel.addElement(nueva.getNombre() + " — " + nueva.getProvincia());
+                	if(PlanificadorRed.agregarLocalidad(nueva.getNombre(),nueva.getProvincia(),nueva.getLatitud() ,nueva.getLongitud())) {
+                		listModel.addElement(nueva.getNombre() + " — " + nueva.getProvincia());
+                	}
+                else {
+                		mostrarMensaje("la localidad ya existe","Error");
+                	}
                 }
             }
         });
@@ -162,8 +165,8 @@ public class SolicitudDePlanificacion extends JFrame {
         btnGenerar.setBounds(480, 540, 210, 36);
         btnGenerar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                crearParametrosPrecio();
-                crearPlanificacion();
+                
+               crearPlanificacion(numCostoKm,numTarifaInterprovincial,numCostoDistanciasLargas);
             }
         });
 
@@ -175,50 +178,53 @@ public class SolicitudDePlanificacion extends JFrame {
     private void cargarLocalidadesGuardadas() {
         new PlanificadorRed().cargarDatos();
         for (Localidad loc : PlanificadorRed.getLocalidades()) {
-            listaLocalidades.add(loc);
+            
             listModel.addElement(loc.getNombre() + " — " + loc.getProvincia());
         }
     }
 
     private void limpiarCampos() {
-        listaLocalidades.clear();
+        PlanificadorRed.limpiarLocalidades();
         listModel.clear();
         numCostoKm.setText("");
         numTarifaInterprovincial.setText("");
         numCostoDistanciasLargas.setText("");
     }
 
-    void crearParametrosPrecio() {
+
+    private void crearPlanificacion( JTextField costoKm,JTextField tarifaInterprovincial, JTextField costoDistanciasLargas) {
+    	
         try {
-            double costoKm               = convertToDouble(numCostoKm);
-            double tarifaInterprovincial = convertToDouble(numTarifaInterprovincial);
-            double costoDistanciasLargas = convertToDouble(numCostoDistanciasLargas);
-            this.parametros = new ParametrosPrecio(costoKm, tarifaInterprovincial, costoDistanciasLargas);
+        	
+            double costo = convertToDouble(costoKm);
+            double tarifa = convertToDouble(tarifaInterprovincial);
+            double adicional = convertToDouble(costoDistanciasLargas);
+
+            if (PlanificadorRed.empezarPlanificacion(
+                    costo,
+                    tarifa,
+                    adicional)) {
+
+                PantallaPrincipalMAPA mapa = new PantallaPrincipalMAPA();
+                mapa.mostrarVentana();
+                dispose();
+
+            } else {
+
+                mostrarMensaje(
+                        "Problema a la hora de iniciar planificación",
+                        "Error");
+            }
+
         } catch (NumberFormatException ex) {
-            mostrarMensaje("Los costos deben ser números válidos.", "Error");
+
+            mostrarMensaje(
+                    "Los costos deben ser números válidos.",
+                    "Error");
         }
     }
+        
 
-    private void crearPlanificacion() {
-        if (parametros == null) return;
-
-        if (listaLocalidades.isEmpty()) {
-            mostrarMensaje("Debe agregar al menos una localidad.", "Error");
-            return;
-        }
-
-        PlanificadorRed.getLocalidades().clear();
-        for (Localidad loc : listaLocalidades) {
-            PlanificadorRed.agregarLocalidad(
-                    loc.getNombre(), loc.getProvincia(),
-                    loc.getLatitud(), loc.getLongitud());
-        }
-        PlanificadorRed.configurarParametros(parametros);
-
-        PantallaPrincipalMAPA mapa = new PantallaPrincipalMAPA();
-        mapa.mostrarVentana();
-        dispose();
-    }
 
     protected void mostrarMensaje(String mensaje, String tipo) {
         JOptionPane.showMessageDialog(this, mensaje, tipo, JOptionPane.ERROR_MESSAGE);

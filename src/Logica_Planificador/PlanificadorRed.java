@@ -21,24 +21,39 @@ public class PlanificadorRed {
 	public PlanificadorRed() {
 	}
 
-	public static void agregarLocalidad(String nombre, String provincia, double latitud, double longitud) {
+    public static boolean agregarLocalidad(String nombre, String provincia,double latitud,double longitud) {
+        if (existeLocalidad(nombre, provincia)) {
+            return false;
+        }
 
-		Localidad loc = new Localidad(nombre, provincia, latitud, longitud);
+        localidades.add(new Localidad(nombre,provincia,latitud,longitud));
+        guardarDatos();
+        return true;
+    }
+    private static boolean existeLocalidad(String nombre,String provincia) {
 
-		localidades.add(loc);
-		guardarDatos();
-	}
+    	return localidades.stream().anyMatch(l ->l.getNombre().equalsIgnoreCase(nombre) && l.getProvincia().equalsIgnoreCase(provincia));
 
-	public static void guardarDatos() {
-		PersistenciaENJson.guardarLocalidades(localidades, "localidades.json");
-	}
+    }
+    public static void guardarDatos() {
 
-	public void cargarDatos() {
-		localidades = PersistenciaENJson.cargarLocalidades("localidades.json");
-	}
+        PersistenciaENJson.guardarLocalidades(
+                localidades,
+                "localidades.json"
+        );
+    }
+
+    public void cargarDatos() {
+
+        localidades = PersistenciaENJson.cargarLocalidades(
+                "localidades.json"
+        );
+    }
 
     public static List<Localidad> getLocalidades() {
-        return localidades;
+
+        return new ArrayList<>(localidades);
+
     }
     public static List<ConexionVisual> generarConexionesVisuales(Grafo<Localidad> resultado2) {
 		List<ConexionVisual> conexiones =
@@ -56,15 +71,15 @@ public class PlanificadorRed {
 
 		    conexiones.add(conexion);
 		}
-		
+
 		return conexiones;
     }
     public static Grafo<Localidad> calcularAGM() {
-
+    	
         Grafo<Localidad> grafo =
         		construirGrafoCompletoDeLocalidades(
                         localidades
-                   
+
                 );
 
 		AlgoritmoKruskal<Localidad> kruskal = new AlgoritmoKruskal<>();
@@ -72,7 +87,28 @@ public class PlanificadorRed {
 		return kruskal.calcular(grafo);
 	}
 
-	public static Grafo<Localidad> construirGrafoCompletoDeLocalidades(List<Localidad> localidades) {
+    public static void reemplazarLocalidades(
+            List<Localidad> nuevasLocalidades) {
+
+        localidades.clear();
+        localidades.addAll(nuevasLocalidades);
+    }
+
+    public static void resetear() {
+        localidades.clear();
+        parametros = null;
+    }
+
+    public static boolean empezarPlanificacion(double costoKm, double tarifaInternacional, double costoDistanciasLargas) {
+        configurarParametros(costoKm,tarifaInternacional,costoDistanciasLargas);
+        return !localidades.isEmpty();
+    }
+    public static void limpiarLocalidades() {
+        localidades.clear();
+        guardarDatos();
+    }
+
+    public static Grafo<Localidad> construirGrafoCompletoDeLocalidades(List<Localidad> localidades) {
 
         // Preparamos la lista donde vamos a guardar todas las conexiones
         List<Arista<Localidad>> aristas = new ArrayList<>();
