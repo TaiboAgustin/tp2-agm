@@ -25,7 +25,7 @@ import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
 import Logica_Planificador.ConexionVisual;
 import Logica_Planificador.PlanificadorRed;
-import logica.agm.ResultadoAGM;
+import logica.modelo.Grafo;
 import logica.modelo.Localidad;
 
 public class PantallaPrincipalMAPA {
@@ -236,7 +236,7 @@ public class PantallaPrincipalMAPA {
             putValue(SHORT_DESCRIPTION, "Calcular y dibujar el árbol de mínima expansión");
         }
         public void actionPerformed(ActionEvent e) {
-            ResultadoAGM<Localidad> resultado = PlanificadorRed.calcularAGM();
+            Grafo<Localidad> resultado = PlanificadorRed.calcularAGM();
             List<ConexionVisual> conexiones = PlanificadorRed.generarConexionesVisuales(resultado);
             mapa.removeAllMapPolygons();
             dibujarAGM(conexiones);
