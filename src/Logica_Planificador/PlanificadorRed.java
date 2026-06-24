@@ -5,7 +5,6 @@ import java.util.List;
 
 import DTO.PersistenciaENJson;
 import logica.agm.AlgoritmoKruskal;
-import logica.agm.ResultadoAGM;
 import logica.modelo.Arista;
 import logica.modelo.GeneradorDeGrafo;
 import logica.modelo.Grafo;
@@ -52,12 +51,12 @@ public class PlanificadorRed {
     public static List<Localidad> getLocalidades() {
         return localidades;
     }
-    public static List<ConexionVisual> generarConexionesVisuales(ResultadoAGM<Localidad> resultado2) {       
+    public static List<ConexionVisual> generarConexionesVisuales(Grafo<Localidad> resultado2) {
 		List<ConexionVisual> conexiones =
 		        new ArrayList<>();
-		
-		 for (Arista<Localidad> arista : resultado2.getConexiones()) {		
-		
+
+		 for (Arista<Localidad> arista : resultado2.getAristas()) {
+
 		    ConexionVisual conexion =
 		            new ConexionVisual(
 		                    arista.getOrigen().getLatitud(),
@@ -65,13 +64,13 @@ public class PlanificadorRed {
 		                    arista.getDestino().getLatitud(),
 		                    arista.getDestino().getLongitud()
 		 );
-		
+
 		    conexiones.add(conexion);
 		}
-		
+
 		return conexiones;
-    } 
-    public static ResultadoAGM<Localidad> calcularAGM() {
+    }
+    public static Grafo<Localidad> calcularAGM() {
     	
         Grafo<Localidad> grafo =
                 GeneradorDeGrafo.construirGrafoCompleto(
