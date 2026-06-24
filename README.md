@@ -56,9 +56,8 @@ tp2-agm/
 │       │   ├── ParametrosPrecio.java
 │       │   └── Validador.java
 │       └── agm/
-│           ├── AlgoritmoKruskal.java
-│           ├── UnionFind.java
-│           └── ResultadoAGM.java
+│           ├── AlgoritmoKruskal.java       # Retorna el AGM como Grafo
+│           └── UnionFind.java
 ├── test/
 │   ├── UI/
 │   │   └── PantallaPrincipalMAPATest.java
@@ -78,7 +77,6 @@ tp2-agm/
 │       └── agm/
 │           ├── AlgoritmoKruskalTest.java
 │           ├── UnionFindTest.java
-│           ├── ResultadoAGMTest.java
 │           └── IntegracionAGMTest.java
 └── lib/
     ├── JMapViewer.jar
