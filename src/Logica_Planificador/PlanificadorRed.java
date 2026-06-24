@@ -5,7 +5,6 @@ import java.util.List;
 
 import DTO.PersistenciaENJson;
 import logica.agm.AlgoritmoKruskal;
-import logica.agm.ResultadoAGM;
 import logica.modelo.Arista;
 import logica.modelo.Grafo;
 import logica.modelo.Localidad;
@@ -18,7 +17,7 @@ public class PlanificadorRed {
 	public PlanificadorRed (double costoKm, double costoFijoInterprovincial, double porcentajeAumento) {
 		this.calculador = new CalculadorCosto(costoKm, costoFijoInterprovincial, porcentajeAumento);
 	}
-	
+
 	public PlanificadorRed() {
 	}
 
@@ -38,36 +37,43 @@ public class PlanificadorRed {
 		localidades = PersistenciaENJson.cargarLocalidades("localidades.json");
 	}
 
-	public static List<Localidad> getLocalidades() {
-		return localidades;
-	}
+    public static List<Localidad> getLocalidades() {
+        return localidades;
+    }
+    public static List<ConexionVisual> generarConexionesVisuales(Grafo<Localidad> resultado2) {
+		List<ConexionVisual> conexiones =
+		        new ArrayList<>();
 
-	public static List<ConexionVisual> generarConexionesVisuales(ResultadoAGM<Localidad> resultado2) {
-		List<ConexionVisual> conexiones = new ArrayList<>();
+		 for (Arista<Localidad> arista : resultado2.getAristas()) {
 
-		for (Arista<Localidad> arista : resultado2.getConexiones()) {
+		    ConexionVisual conexion =
+		            new ConexionVisual(
+		                    arista.getOrigen().getLatitud(),
+		                    arista.getOrigen().getLongitud(),
+		                    arista.getDestino().getLatitud(),
+		                    arista.getDestino().getLongitud()
+		 );
 
-			ConexionVisual conexion = new ConexionVisual(arista.getOrigen().getLatitud(),
-					arista.getOrigen().getLongitud(), arista.getDestino().getLatitud(),
-					arista.getDestino().getLongitud());
-
-			conexiones.add(conexion);
+		    conexiones.add(conexion);
 		}
-
+		
 		return conexiones;
-	}
+    }
+    public static Grafo<Localidad> calcularAGM() {
 
-	public static ResultadoAGM<Localidad> calcularAGM() {
-
-		Grafo<Localidad> grafo = construirGrafoCompletoDeLocalidades(localidades);
+        Grafo<Localidad> grafo =
+                GeneradorDeGrafo.construirGrafoCompleto(
+                        localidades,
+                        parametros
+                );
 
 		AlgoritmoKruskal<Localidad> kruskal = new AlgoritmoKruskal<>();
 
 		return kruskal.calcular(grafo);
 	}
-	
+
 	public static Grafo<Localidad> construirGrafoCompletoDeLocalidades(List<Localidad> localidades) {
-        
+
         // Preparamos la lista donde vamos a guardar todas las conexiones
         List<Arista<Localidad>> aristas = new ArrayList<>();
 
@@ -79,7 +85,7 @@ public class PlanificadorRed {
 
                 // Calculamos la matemática
                 double costo = calculador.calcularCostoEntreDosLocalidades(origen, destino);
-                
+
                 // Guardamos la arista en nuestra lista temporal
                 aristas.add(new Arista<>(origen, destino, costo));
             }
