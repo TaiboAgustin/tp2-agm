@@ -62,9 +62,9 @@ public class PlanificadorRed {
     public static Grafo<Localidad> calcularAGM() {
 
         Grafo<Localidad> grafo =
-                GeneradorDeGrafo.construirGrafoCompleto(
-                        localidades,
-                        parametros
+        		construirGrafoCompletoDeLocalidades(
+                        localidades
+                   
                 );
 
 		AlgoritmoKruskal<Localidad> kruskal = new AlgoritmoKruskal<>();
