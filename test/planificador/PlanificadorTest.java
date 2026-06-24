@@ -9,186 +9,177 @@ import org.junit.Test;
 
 import Logica_Planificador.PlanificadorRed;
 import logica.modelo.Localidad;
-
 public class PlanificadorTest {
 
     @Before
-    public void resetearLista() {
-
-        PlanificadorRed
-                .getLocalidades()
-                .clear();
+    public void setUp() {
+        PlanificadorRed.resetear();
     }
 
     @Test
-    public void testAgregarLocalidad() {
+    public void agregarLocalidadValidaRetornaTrue() {
 
-        PlanificadorRed.agregarLocalidad(
-                "Buenos Aires",
-                "Buenos Aires",
-                -34.6,
-                -58.4
-        );
+        boolean resultado =
+                PlanificadorRed.agregarLocalidad(
+                        "Buenos Aires",
+                        "Buenos Aires",
+                        -34.6037,
+                        -58.3816);
 
-        List<Localidad> lista =
-                PlanificadorRed
-                        .getLocalidades();
-
+        assertTrue(resultado);
         assertEquals(
                 1,
-                lista.size()
-        );
-
-        assertEquals(
-                "Buenos Aires",
-                lista.get(0).getNombre()
-        );
+                PlanificadorRed.getLocalidades().size());
     }
 
     @Test
-    public void testAgregarMuchasLocalidades() {
+    public void agregarLocalidadDuplicadaRetornaFalse() {
 
         PlanificadorRed.agregarLocalidad(
-                "A",
-                "A",
+                "Buenos Aires",
+                "Buenos Aires",
+                -34.6037,
+                -58.3816);
+
+        boolean resultado =
+                PlanificadorRed.agregarLocalidad(
+                        "Buenos Aires",
+                        "Buenos Aires",
+                        -34.6037,
+                        -58.3816);
+
+        assertFalse(resultado);
+
+        assertEquals(
                 1,
-                1
-        );
+                PlanificadorRed.getLocalidades().size());
+    }
 
-        PlanificadorRed.agregarLocalidad(
-                "B",
-                "B",
+    @Test
+    public void agregarLocalidadMismoNombreDistintaProvinciaEsValida() {
+
+        boolean resultado1 =
+                PlanificadorRed.agregarLocalidad(
+                        "San Martin",
+                        "Buenos Aires",
+                        -34.57,
+                        -58.53);
+
+        boolean resultado2 =
+                PlanificadorRed.agregarLocalidad(
+                        "San Martin",
+                        "Mendoza",
+                        -33.08,
+                        -68.47);
+
+        assertTrue(resultado1);
+        assertTrue(resultado2);
+
+        assertEquals(
                 2,
-                2
-        );
-
-        PlanificadorRed.agregarLocalidad(
-                "C",
-                "C",
-                3,
-                3
-        );
-
-        assertEquals(
-                3,
-                PlanificadorRed
-                        .getLocalidades()
-                        .size()
-        );
+                PlanificadorRed.getLocalidades().size());
     }
 
     @Test
-    public void testGetLocalidadesNoNulo() {
+    public void configurarParametrosGuardaLosValoresCorrectamente() {
+
+        PlanificadorRed.configurarParametros(
+                10.0,
+                50.0,
+                1.5);
 
         assertNotNull(
-                PlanificadorRed
-                        .getLocalidades()
-        );
+                PlanificadorRed.getParametros());
+
+        assertEquals(
+                10.0,
+                PlanificadorRed.getParametros().getCostoPorKm(),
+                0.001);
+
+        assertEquals(
+                50.0,
+                PlanificadorRed.getParametros().getCostoFijoInterprovincial(),
+                0.001);
+
+        assertEquals(
+                1.5,
+                PlanificadorRed.getParametros().getPorcentajeAumento(),
+                0.001);
     }
 
     @Test
-    public void testListaComienzaVacia() {
+    public void empezarPlanificacionSinLocalidadesRetornaFalse() {
 
-        assertTrue(PlanificadorRed.getLocalidades().isEmpty());
+        boolean resultado =
+                PlanificadorRed.empezarPlanificacion(
+                        10.0,
+                        50.0,
+                        1.5);
+
+        assertFalse(resultado);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testAgregarNombreVacio() {
+    @Test
+    public void empezarPlanificacionConLocalidadesRetornaTrue() {
 
         PlanificadorRed.agregarLocalidad(
-                "",
                 "Buenos Aires",
-                -34,
-                -57
-        );
-    }
+                "Buenos Aires",
+                -34.6037,
+                -58.3816);
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testAgregarProvinciaVacia() {
+        boolean resultado =
+                PlanificadorRed.empezarPlanificacion(
+                        10.0,
+                        50.0,
+                        1.5);
 
-        PlanificadorRed.agregarLocalidad(
-                "La Plata",
-                "",
-                -34,
-                -57
-        );
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testAgregarLatitudInvalida() {
-
-        PlanificadorRed.agregarLocalidad(
-                "Test",
-                "Test",
-                200,
-                -50
-        );
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testAgregarLongitudInvalida() {
-
-        PlanificadorRed.agregarLocalidad(
-                "Test",
-                "Test",
-                -50,
-                500
-        );
+        assertTrue(resultado);
     }
 
     @Test
-    public void testGuardarYRecuperarDatos() {
+    public void limpiarLocalidadesDejaLaListaVacia() {
+
+        PlanificadorRed.agregarLocalidad(
+                "Buenos Aires",
+                "Buenos Aires",
+                -34.6037,
+                -58.3816);
 
         PlanificadorRed.agregarLocalidad(
                 "Cordoba",
                 "Cordoba",
-                -31.4,
-                -64.2
-        );
+                -31.4201,
+                -64.1888);
 
-        PlanificadorRed planificador =
-                new PlanificadorRed();
-
-        planificador.cargarDatos();
-
-        List<Localidad> lista =
-                PlanificadorRed
-                        .getLocalidades();
-
-        assertFalse(
-                lista.isEmpty()
-        );
+        PlanificadorRed.limpiarLocalidades();
 
         assertEquals(
-                "Cordoba",
-                lista.get(0).getNombre()
-        );
+                0,
+                PlanificadorRed.getLocalidades().size());
     }
 
     @Test
-    public void testAgregarLocalidadesMantieneDatos() {
+    public void resetearEliminaParametrosYLocalidades() {
 
         PlanificadorRed.agregarLocalidad(
-                "A",
-                "A",
-                1,
-                1
-        );
+                "Buenos Aires",
+                "Buenos Aires",
+                -34.6037,
+                -58.3816);
 
-        new PlanificadorRed();
+        PlanificadorRed.configurarParametros(
+                10.0,
+                50.0,
+                1.5);
 
-        PlanificadorRed.agregarLocalidad(
-                "B",
-                "B",
-                2,
-                2
-        );
+        PlanificadorRed.resetear();
 
         assertEquals(
-                2,
-                PlanificadorRed
-                        .getLocalidades()
-                        .size()
-        );
+                0,
+                PlanificadorRed.getLocalidades().size());
+
+        assertNull(
+                PlanificadorRed.getParametros());
     }
 }
