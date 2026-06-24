@@ -48,7 +48,7 @@ public class PlanificadorTest {
                         -34.6037,
                         -58.3816);
 
-        assertFalse(resultado);
+        assertTrue(!resultado);
 
         assertEquals(
                 1,

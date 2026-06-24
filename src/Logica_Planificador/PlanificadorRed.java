@@ -20,12 +20,10 @@ public class PlanificadorRed {
     }
 
     public static boolean agregarLocalidad(String nombre,String provincia,double latitud,double longitud) {
-    	for (Localidad loc :localidades ) {
-    		if(loc.getNombre().equalsIgnoreCase(nombre) && loc.getProvincia().equalsIgnoreCase(provincia)) {
-    			return false;
-    		}
-    	}
         Localidad loc = new Localidad(nombre,provincia,latitud,longitud);
+        if(localidades.contains(loc)) {
+        	return false;
+        }
         localidades.add(loc);
         guardarDatos();
         return true;
