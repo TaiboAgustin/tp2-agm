@@ -10,11 +10,11 @@ import logica.modelo.Grafo;
 
 public class AlgoritmoKruskal<T> {
 
-    public ResultadoAGM<T> calcular(Grafo<T> grafo) {
+    public Grafo<T> calcular(Grafo<T> grafo) {
         if (grafo == null)
             throw new IllegalArgumentException("El grafo no puede ser nulo");
 
-        List<T> nodos = grafo.getNodos();
+        List<T> nodos = new ArrayList<>(grafo.getNodos());
         List<Arista<T>> aristas = new ArrayList<>(grafo.getAristas());
         aristas.sort(Comparator.comparingDouble(Arista::getCosto));
 
@@ -34,6 +34,6 @@ public class AlgoritmoKruskal<T> {
             }
         }
 
-        return new ResultadoAGM<>(seleccionadas);
+        return new Grafo<>(nodos, seleccionadas);
     }
 }

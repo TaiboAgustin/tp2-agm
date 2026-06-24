@@ -22,10 +22,4 @@ public class GrafoTest {
     public void menosDeDosNodosLanzaExcepcion() {
         new Grafo<>(Arrays.asList(buenosAires), Arrays.asList());
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void grafoNoCompletoLanzaExcepcion() {
-        Arista<Localidad> a = new Arista<>(buenosAires, rosario, 1000.0);
-        new Grafo<>(Arrays.asList(buenosAires, rosario, cordoba), Arrays.asList(a));
-    }
 }
