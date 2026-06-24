@@ -19,17 +19,22 @@ public class PlanificadorRed {
     public PlanificadorRed() {
     }
 
-    public static boolean agregarLocalidad(String nombre,String provincia,double latitud,double longitud) {
-        Localidad loc = new Localidad(nombre,provincia,latitud,longitud);
-        if(localidades.contains(loc)) {
-        	return false;
+    public static boolean agregarLocalidad(String nombre, String provincia,double latitud,double longitud) {
+        if (existeLocalidad(nombre, provincia)) {
+            return false;
         }
-        localidades.add(loc);
+
+        localidades.add(new Localidad(nombre,provincia,latitud,longitud));
         guardarDatos();
         return true;
     }
-
+    private static boolean existeLocalidad(String nombre,String provincia) {
+    	
+    	return localidades.stream().anyMatch(l ->l.getNombre().equalsIgnoreCase(nombre) && l.getProvincia().equalsIgnoreCase(provincia));
+    	
+    }
     public static void guardarDatos() {
+    	
         PersistenciaENJson.guardarLocalidades(
                 localidades,
                 "localidades.json"
@@ -37,15 +42,19 @@ public class PlanificadorRed {
     }
 
     public void cargarDatos() {
+    	
         localidades = PersistenciaENJson.cargarLocalidades(
                 "localidades.json"
         );
     }
 
     public static List<Localidad> getLocalidades() {
+    	
         return new ArrayList<>(localidades);
+        
     }
-    public static List<ConexionVisual> generarConexionesVisuales(ResultadoAGM<Localidad> resultado2) {       
+    public static List<ConexionVisual> generarConexionesVisuales(ResultadoAGM<Localidad> resultado2) {  
+    	
 		List<ConexionVisual> conexiones =
 		        new ArrayList<>();
 		

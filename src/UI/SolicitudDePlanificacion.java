@@ -136,7 +136,9 @@ public class SolicitudDePlanificacion extends JFrame {
                 	if(PlanificadorRed.agregarLocalidad(nueva.getNombre(),nueva.getProvincia(),nueva.getLatitud() ,nueva.getLongitud())) {
                 		listModel.addElement(nueva.getNombre() + " — " + nueva.getProvincia());
                 	}
-                   mostrarMensaje("la localidad ya existe","Error");
+                else {
+                		mostrarMensaje("la localidad ya existe","Error");
+                	}
                 }
             }
         });
@@ -164,7 +166,7 @@ public class SolicitudDePlanificacion extends JFrame {
         btnGenerar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
-                crearPlanificacion(numCostoKm,numTarifaInterprovincial,numCostoDistanciasLargas);
+               crearPlanificacion(numCostoKm,numTarifaInterprovincial,numCostoDistanciasLargas);
             }
         });
 
@@ -190,16 +192,39 @@ public class SolicitudDePlanificacion extends JFrame {
     }
 
 
-    private void crearPlanificacion(JTextField costoKm,JTextField tarifaInterprovincial,JTextField costoDistanciasLargas) {
-    	if(PlanificadorRed.empezarPlanificacion(convertToDouble(costoKm),convertToDouble(tarifaInterprovincial),convertToDouble(costoDistanciasLargas))) {		
-        PantallaPrincipalMAPA mapa = new PantallaPrincipalMAPA();
-        mapa.mostrarVentana();
-        dispose();
+    private void crearPlanificacion( JTextField costoKm,JTextField tarifaInterprovincial, JTextField costoDistanciasLargas) {
+    	
+        try {
+        	
+            double costo = convertToDouble(costoKm);
+            double tarifa = convertToDouble(tarifaInterprovincial);
+            double adicional = convertToDouble(costoDistanciasLargas);
+
+            if (PlanificadorRed.empezarPlanificacion(
+                    costo,
+                    tarifa,
+                    adicional)) {
+
+                PantallaPrincipalMAPA mapa = new PantallaPrincipalMAPA();
+                mapa.mostrarVentana();
+                dispose();
+
+            } else {
+
+                mostrarMensaje(
+                        "Problema a la hora de iniciar planificación",
+                        "Error");
+            }
+
+        } catch (NumberFormatException ex) {
+
+            mostrarMensaje(
+                    "Los costos deben ser números válidos.",
+                    "Error");
         }
-    	else {
-    		mostrarMensaje("Problema a la hora de Iniciar Planificacion","Error");
-    	}
     }
+        
+
 
     protected void mostrarMensaje(String mensaje, String tipo) {
         JOptionPane.showMessageDialog(this, mensaje, tipo, JOptionPane.ERROR_MESSAGE);
