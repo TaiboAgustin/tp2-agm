@@ -265,7 +265,7 @@ public class PlanificadorTest {
         Grafo<Localidad> agm = PlanificadorRed.calcularAGM();
 
         int n = PlanificadorRed.getLocalidades().size();
-        assertEquals(agm.getAristas(), n-1);
+        assertEquals(agm.getAristas().size(), n-1);
     }
 
     @Test
