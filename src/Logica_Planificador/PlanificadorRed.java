@@ -15,7 +15,7 @@ public class PlanificadorRed {
 	private static CalculadorCosto calculador;
 
 	public PlanificadorRed (double costoKm, double costoFijoInterprovincial, double porcentajeAumento) {
-		this.calculador = new CalculadorCosto(costoKm, costoFijoInterprovincial, porcentajeAumento);
+		calculador = new CalculadorCosto(costoKm, costoFijoInterprovincial, porcentajeAumento);
 	}
 
 	public PlanificadorRed() {
