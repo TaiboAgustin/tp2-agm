@@ -108,6 +108,8 @@ public class PlanificadorRed {
     }
 
     public static Grafo<Localidad> construirGrafoCompletoDeLocalidades(List<Localidad> localidades) {
+    	if (calculador == null) 
+    		throw new IllegalStateException("Debe llamarse empezarPlanificacion antes de construir el grafo");
 
         // Preparamos la lista donde vamos a guardar todas las conexiones
         List<Arista<Localidad>> aristas = new ArrayList<>();
