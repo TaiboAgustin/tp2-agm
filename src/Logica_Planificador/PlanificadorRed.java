@@ -96,11 +96,10 @@ public class PlanificadorRed {
 
     public static void resetear() {
         localidades.clear();
-        parametros = null;
     }
 
-    public static boolean empezarPlanificacion(double costoKm, double tarifaInternacional, double costoDistanciasLargas) {
-        configurarParametros(costoKm,tarifaInternacional,costoDistanciasLargas);
+    public static boolean empezarPlanificacion(double costoKm, double costoFijoInterprovincial, double porcentajeAumento) {
+    	calculador = new CalculadorCosto(costoKm, costoFijoInterprovincial, porcentajeAumento);
         return !localidades.isEmpty();
     }
     public static void limpiarLocalidades() {
@@ -132,7 +131,7 @@ public class PlanificadorRed {
     }
 
 
-	private class CalculadorCosto {
+	private static class CalculadorCosto {
 		private double costoKm;
 		private double costoFijoInterprovincial;
 		private double porcentajeAumento;

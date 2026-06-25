@@ -20,7 +20,6 @@ import javax.swing.SwingConstants;
 
 import Logica_Planificador.PlanificadorRed;
 import logica.modelo.Localidad;
-import logica.modelo.ParametrosPrecio;
 
 public class SolicitudDePlanificacion extends JFrame {
 
