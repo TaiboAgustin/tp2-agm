@@ -98,7 +98,6 @@ public class PlanificadorRed {
         return new Grafo<>(localidades, aristas);
     }
 
-
     private static class CalculadorCosto {
         private final double costoKm;
         private final double costoFijoInterprovincial;
