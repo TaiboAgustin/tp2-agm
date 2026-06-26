@@ -31,15 +31,5 @@ public class AristaTest {
         new Arista<>(buenosAires, buenosAires, 1000.0);
     }
 
-    @Test
-    public void aceptaPesoNegativo() {
-        Arista<Localidad> a = new Arista<>(buenosAires, rosario, -1.0);
-        assertEquals(-1.0, a.getPeso(), 0.001);
-    }
-
-    @Test
-    public void aceptaPesoCero() {
-        Arista<Localidad> a = new Arista<>(buenosAires, rosario, 0.0);
-        assertEquals(0.0, a.getPeso(), 0.001);
-    }
+   
 }

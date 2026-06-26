@@ -50,7 +50,7 @@ public class IntegracionAGMTest {
         Grafo<Localidad> grafo = new Grafo<>(Arrays.asList(buenosAires, rosario, cordoba), aristas);
         Grafo<Localidad> resultado = kruskal.calcular(grafo);
 
-        assertEquals(3.0, calcularCostoTotal(resultado), 0.001);
+        assertEquals(3.0, GrafoTestHelper.calcularCostoTotal(resultado), 0.001);
         assertFalse(contieneArista(resultado.getAristas(), buenosAires, cordoba));
     }
 
@@ -77,7 +77,7 @@ public class IntegracionAGMTest {
         Grafo<Localidad> resultado = kruskal.calcular(grafo);
 
         double costoAlternativo = 700.0 + 300.0 + 900.0;
-        assertTrue(calcularCostoTotal(resultado) < costoAlternativo);
+        assertTrue(GrafoTestHelper.calcularCostoTotal(resultado) < costoAlternativo);
     }
 
     @Test
@@ -120,9 +120,5 @@ public class IntegracionAGMTest {
             (a.getVertice1().equals(v1) && a.getVertice2().equals(v2)) ||
             (a.getVertice1().equals(v2) && a.getVertice2().equals(v1))
         );
-    }
-
-    private double calcularCostoTotal(Grafo<Localidad> grafo) {
-        return grafo.getAristas().stream().mapToDouble(Arista::getPeso).sum();
     }
 }

@@ -14,7 +14,6 @@ public class Arista<T> {
         if (vertice1.equals(vertice2))
             throw new IllegalArgumentException("Los vértices no pueden ser el mismo nodo");
         
-        // Se elimina la validación (peso <= 0) para mantener la clase genérica y reutilizable.
 
         this.vertice1 = vertice1;
         this.vertice2 = vertice2;

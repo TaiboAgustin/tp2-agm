@@ -25,10 +25,7 @@ public class Localidad {
     public double getLatitud() { return latitud; }
     public double getLongitud() { return longitud; }
     
-    /* 
-     * Se utiliza la fórmula de Haversine para calcular distancia entre dos puntos de la sup terrestre. Las variables a y c son
-     * parámetros de la fórmula
-     */
+
     public double calcularDistancia(Localidad localidadExterna) {
     	double latLocalidadExterna = localidadExterna.getLatitud();
     	double lonLocalidadExterna = localidadExterna.getLongitud();

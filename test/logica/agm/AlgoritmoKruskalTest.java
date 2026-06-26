@@ -38,7 +38,6 @@ public class AlgoritmoKruskalTest {
         
         // Ahora devuelve un Grafo
         Grafo<Localidad> resultado = kruskal.calcular(grafo);
-        // Usamos getAristas() en vez de getConexiones()
         assertEquals(1, resultado.getAristas().size());
     }
 
@@ -54,8 +53,7 @@ public class AlgoritmoKruskalTest {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
         Grafo<Localidad> resultado = kruskal.calcular(grafo);
         
-        // Usamos el método auxiliar para sumar los pesos
-        assertEquals(900.0, calcularCostoTotal(resultado), 0.001);
+        assertEquals(900.0, GrafoTestHelper.calcularCostoTotal(resultado), 0.001);
     }
 
     @Test
@@ -88,10 +86,5 @@ public class AlgoritmoKruskalTest {
              (a.getVertice1().equals(v2) && a.getVertice2().equals(v1)))
             && a.getPeso() == peso
         );
-    }
-
-    // Método auxiliar para reemplazar resultado.getCostoTotal()
-    private double calcularCostoTotal(Grafo<Localidad> grafo) {
-        return grafo.getAristas().stream().mapToDouble(Arista::getPeso).sum();
     }
 }
