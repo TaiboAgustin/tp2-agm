@@ -12,7 +12,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
@@ -25,6 +28,7 @@ import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
 import Logica_Planificador.ConexionVisual;
 import Logica_Planificador.PlanificadorRed;
+import logica.modelo.Arista;
 import logica.modelo.Grafo;
 import logica.modelo.Localidad;
 
@@ -43,14 +47,19 @@ public class PantallaPrincipalMAPA {
     private JTextField datoLatitud;
     private JTextField datoLongitud;
     private JLabel lblResultado;
+    private JTextArea areaConexiones;
     private final Action action   = new SwingAction();
     private final Action action_1 = new SwingAction_1();
+
+    private final PlanificadorRed planificador;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    PantallaPrincipalMAPA window = new PantallaPrincipalMAPA();
+                    PlanificadorRed p = new PlanificadorRed();
+                    p.cargarDatos();
+                    PantallaPrincipalMAPA window = new PantallaPrincipalMAPA(p);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -59,7 +68,8 @@ public class PantallaPrincipalMAPA {
         });
     }
 
-    public PantallaPrincipalMAPA() {
+    public PantallaPrincipalMAPA(PlanificadorRed planificador) {
+        this.planificador = planificador;
         initialize();
     }
 
@@ -78,9 +88,6 @@ public class PantallaPrincipalMAPA {
 
         buildSidebar(contenedor);
         buildMapa(contenedor);
-
-        PlanificadorRed control = new PlanificadorRed();
-        control.cargarDatos();
         cargarLocalidadesEnMapa();
     }
 
@@ -104,10 +111,10 @@ public class PantallaPrincipalMAPA {
         sep1.setBounds(10, 46, 200, 1);
         sidebar.add(sep1);
 
-        datoNombre   = buildSidebarField(sidebar, "Nombre",    58);
+        datoNombre    = buildSidebarField(sidebar, "Nombre",    58);
         datoProvincia = buildSidebarField(sidebar, "Provincia", 118);
-        datoLatitud  = buildSidebarField(sidebar, "Latitud",   178);
-        datoLongitud = buildSidebarField(sidebar, "Longitud",  238);
+        datoLatitud   = buildSidebarField(sidebar, "Latitud",   178);
+        datoLongitud  = buildSidebarField(sidebar, "Longitud",  238);
 
         JButton btnAgregar = new JButton();
         btnAgregar.setAction(action);
@@ -138,6 +145,46 @@ public class PantallaPrincipalMAPA {
         lblResultado.setForeground(Color.WHITE);
         lblResultado.setBounds(10, 450, 200, 24);
         sidebar.add(lblResultado);
+
+        JLabel sep3 = new JLabel();
+        sep3.setBackground(BORDER);
+        sep3.setOpaque(true);
+        sep3.setBounds(10, 496, 200, 1);
+        sidebar.add(sep3);
+
+        JButton btnVolver = new JButton("← Nueva planificación");
+        styleButton(btnVolver, INPUT_BG);
+        btnVolver.setBounds(10, 508, 200, 36);
+        btnVolver.addActionListener(ev -> {
+            new SolicitudDePlanificacion().setVisible(true);
+            frame.dispose();
+        });
+        sidebar.add(btnVolver);
+
+        JLabel sep4 = new JLabel();
+        sep4.setBackground(BORDER);
+        sep4.setOpaque(true);
+        sep4.setBounds(10, 554, 200, 1);
+        sidebar.add(sep4);
+
+        JLabel lblConexionesTitulo = new JLabel("Costo por conexión", SwingConstants.CENTER);
+        lblConexionesTitulo.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        lblConexionesTitulo.setForeground(GRAY);
+        lblConexionesTitulo.setBounds(10, 560, 200, 16);
+        sidebar.add(lblConexionesTitulo);
+
+        areaConexiones = new JTextArea();
+        areaConexiones.setBackground(INPUT_BG);
+        areaConexiones.setForeground(Color.WHITE);
+        areaConexiones.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        areaConexiones.setEditable(false);
+        areaConexiones.setBorder(null);
+
+        JScrollPane scrollConexiones = new JScrollPane(areaConexiones);
+        scrollConexiones.setBounds(10, 580, 200, 58);
+        scrollConexiones.setBorder(BorderFactory.createLineBorder(BORDER, 1));
+        scrollConexiones.getViewport().setBackground(INPUT_BG);
+        sidebar.add(scrollConexiones);
     }
 
     private JTextField buildSidebarField(JPanel panel, String labelText, int y) {
@@ -189,7 +236,7 @@ public class PantallaPrincipalMAPA {
     }
 
     private void cargarLocalidadesEnMapa() {
-        for (Localidad loc : PlanificadorRed.getLocalidades()) {
+        for (Localidad loc : planificador.getLocalidades()) {
             agregarMarcador(loc);
         }
     }
@@ -214,19 +261,34 @@ public class PantallaPrincipalMAPA {
         frame.setVisible(true);
     }
 
+    private void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(frame, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     private class SwingAction extends AbstractAction {
         public SwingAction() {
             putValue(NAME, "Agregar Localidad");
             putValue(SHORT_DESCRIPTION, "Agregar una nueva localidad al mapa");
         }
         public void actionPerformed(ActionEvent e) {
-            PlanificadorRed.agregarLocalidad(
-                    datoNombre.getText(),
-                    datoProvincia.getText(),
-                    Double.parseDouble(datoLatitud.getText()),
-                    Double.parseDouble(datoLongitud.getText()));
-            mapa.removeAllMapMarkers();
-            cargarLocalidadesEnMapa();
+            try {
+                double latitud  = Double.parseDouble(datoLatitud.getText().trim());
+                double longitud = Double.parseDouble(datoLongitud.getText().trim());
+                boolean agregada = planificador.agregarLocalidad(
+                        datoNombre.getText().trim(),
+                        datoProvincia.getText().trim(),
+                        latitud, longitud);
+                if (agregada) {
+                    mapa.removeAllMapMarkers();
+                    cargarLocalidadesEnMapa();
+                } else {
+                    mostrarError("La localidad ya existe.");
+                }
+            } catch (NumberFormatException ex) {
+                mostrarError("Latitud y longitud deben ser números válidos.");
+            } catch (IllegalArgumentException ex) {
+                mostrarError(ex.getMessage());
+            }
         }
     }
 
@@ -236,11 +298,27 @@ public class PantallaPrincipalMAPA {
             putValue(SHORT_DESCRIPTION, "Calcular y dibujar el árbol de mínima expansión");
         }
         public void actionPerformed(ActionEvent e) {
-            Grafo<Localidad> resultado = PlanificadorRed.calcularAGM();
-            List<ConexionVisual> conexiones = PlanificadorRed.generarConexionesVisuales(resultado);
-            mapa.removeAllMapPolygons();
-            dibujarAGM(conexiones);
-            lblResultado.setText("Costo total: " + resultado.getCostoTotal());
+            try {
+                Grafo<Localidad> resultado = planificador.calcularAGM();
+                List<ConexionVisual> conexiones = planificador.generarConexionesVisuales(resultado);
+                mapa.removeAllMapPolygons();
+                dibujarAGM(conexiones);
+                lblResultado.setText(String.format("$%.2f", resultado.getPesoTotal()));
+
+                StringBuilder sb = new StringBuilder();
+                for (Arista<Localidad> a : resultado.getAristas()) {
+                    sb.append(a.getVertice1().getNombre())
+                      .append(" ↔ ")
+                      .append(a.getVertice2().getNombre())
+                      .append(": $")
+                      .append(String.format("%.2f", a.getPeso()))
+                      .append("\n");
+                }
+                areaConexiones.setText(sb.toString().trim());
+                areaConexiones.setCaretPosition(0);
+            } catch (IllegalArgumentException | IllegalStateException ex) {
+                mostrarError(ex.getMessage());
+            }
         }
     }
 }
