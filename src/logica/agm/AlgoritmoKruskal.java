@@ -16,7 +16,7 @@ public class AlgoritmoKruskal<T> {
 
         List<T> nodos = new ArrayList<>(grafo.getNodos());
         List<Arista<T>> aristas = new ArrayList<>(grafo.getAristas());
-        aristas.sort(Comparator.comparingDouble(Arista::getCosto));
+        aristas.sort(Comparator.comparingDouble(Arista::getPeso));
 
         Map<T, Integer> indice = new HashMap<>();
         for (int i = 0; i < nodos.size(); i++)
@@ -26,8 +26,8 @@ public class AlgoritmoKruskal<T> {
         List<Arista<T>> seleccionadas = new ArrayList<>();
 
         for (Arista<T> arista : aristas) {
-            int u = indice.get(arista.getOrigen());
-            int v = indice.get(arista.getDestino());
+            int u = indice.get(arista.getVertice1());
+            int v = indice.get(arista.getVertice2());
             if (!uf.mismoGrupo(u, v)) {
                 seleccionadas.add(arista);
                 uf.union(u, v);
