@@ -30,6 +30,7 @@ public class AristaTest {
     public void verticesIgualesLanzaExcepcion() {
         new Arista<>(buenosAires, buenosAires, 1000.0);
     }
+
     @Test
     public void aceptaPesoNegativo() {
         Arista<Localidad> a = new Arista<>(buenosAires, rosario, -1.0);
@@ -57,4 +58,3 @@ public class AristaTest {
         assertNotEquals(a1, a2);
     }
 }
-
