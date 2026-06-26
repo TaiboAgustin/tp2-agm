@@ -95,37 +95,37 @@ public class PlanificadorTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void empezarPlanificacion_lanzaExcepcionConCostoKmCero() {
+    public void empezarPlanificacionLanzaExcepcionConCostoKmCero() {
         planificador.empezarPlanificacion(0, 500, 10);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void empezarPlanificacion_lanzaExcepcionConCostoKmNegativo() {
+    public void empezarPlanificacionLanzaExcepcionConCostoKmNegativo() {
         planificador.empezarPlanificacion(-1, 500, 10);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void empezarPlanificacion_lanzaExcepcionConCostoFijoCero() {
+    public void empezarPlanificacionLanzaExcepcionConCostoFijoCero() {
         planificador.empezarPlanificacion(100, 0, 10);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void empezarPlanificacion_lanzaExcepcionConCostoFijoNegativo() {
+    public void empezarPlanificacionLanzaExcepcionConCostoFijoNegativo() {
         planificador.empezarPlanificacion(100, -50, 10);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void empezarPlanificacion_lanzaExcepcionConPorcentajeCero() {
+    public void empezarPlanificacionLanzaExcepcionConPorcentajeCero() {
         planificador.empezarPlanificacion(100, 500, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void empezarPlanificacion_lanzaExcepcionConPorcentajeNegativo() {
+    public void empezarPlanificacionLanzaExcepcionConPorcentajeNegativo() {
         planificador.empezarPlanificacion(100, 500, -5);
     }
 
     @Test
-    public void construirGrafo_costoIntraprovincialSinRecargo() {
+    public void construirGrafoCostoIntraprovincialSinRecargo() {
         planificador.empezarPlanificacion(100, 500, 20);
         Grafo<Localidad> grafo = planificador.construirGrafoCompletoDeLocalidades(
                 Arrays.asList(BUENOS_AIRES, LA_PLATA));
@@ -135,7 +135,7 @@ public class PlanificadorTest {
     }
 
     @Test
-    public void construirGrafo_costoInterprovincialConCargoFijo() {
+    public void construirGrafoCostoInterprovincialConCargoFijo() {
         planificador.empezarPlanificacion(100, 500, 20);
         Grafo<Localidad> grafo = planificador.construirGrafoCompletoDeLocalidades(
                 Arrays.asList(BUENOS_AIRES, ROSARIO));
@@ -147,7 +147,7 @@ public class PlanificadorTest {
     }
 
     @Test
-    public void construirGrafo_recargoAplicaCuandoDistanciaSuperaUmbral() {
+    public void construirGrafoRecargoAplicaCuandoDistanciaSuperaUmbral() {
         planificador.empezarPlanificacion(100, 500, 20);
         Grafo<Localidad> grafo = planificador.construirGrafoCompletoDeLocalidades(
                 Arrays.asList(BUENOS_AIRES, CORDOBA));
@@ -159,7 +159,7 @@ public class PlanificadorTest {
     }
 
     @Test
-    public void calcularAGM_tieneNmenosUnaAristas() {
+    public void calcularAGMTieneNmenosUnaAristas() {
         planificador.empezarPlanificacion(100, 500, 20);
         planificador.reemplazarLocalidades(Arrays.asList(BUENOS_AIRES, CORDOBA, LA_PLATA, ROSARIO));
         Grafo<Localidad> agm = planificador.calcularAGM();
@@ -168,7 +168,7 @@ public class PlanificadorTest {
     }
 
     @Test
-    public void calcularAGM_conectaTodosLosNodos() {
+    public void calcularAGMConectaTodosLosNodos() {
         planificador.empezarPlanificacion(100, 500, 20);
         planificador.reemplazarLocalidades(Arrays.asList(BUENOS_AIRES, CORDOBA, LA_PLATA, ROSARIO));
         Grafo<Localidad> agm = planificador.calcularAGM();
@@ -180,19 +180,19 @@ public class PlanificadorTest {
     }
 
     @Test
-    public void calcularAGM_costoTotalMenorOIgualQueGrafoCompleto() {
+    public void calcularAGMCostoTotalMenorOIgualQueGrafoCompleto() {
         planificador.empezarPlanificacion(100, 500, 20);
         planificador.reemplazarLocalidades(Arrays.asList(BUENOS_AIRES, CORDOBA, LA_PLATA, ROSARIO));
         Grafo<Localidad> grafoCompleto = planificador.construirGrafoCompletoDeLocalidades(
                 planificador.getLocalidades());
         Grafo<Localidad> agm = planificador.calcularAGM();
         double costoAGM = agm.getAristas().stream().mapToDouble(Arista::getPeso).sum();
-        double costoCompleto = grafoCompleto.getAristas().stream().mapToDouble(a -> a.getPeso()).sum();
+        double costoCompleto = grafoCompleto.getAristas().stream().mapToDouble(Arista::getPeso).sum();
         assertTrue(costoAGM <= costoCompleto);
     }
 
     @Test
-    public void generarConexionesVisuales_cantidadIgualAAristas() {
+    public void generarConexionesVisualesCantidadIgualAAristas() {
         planificador.empezarPlanificacion(100, 500, 20);
         Grafo<Localidad> grafo = planificador.construirGrafoCompletoDeLocalidades(
                 Arrays.asList(BUENOS_AIRES, CORDOBA, LA_PLATA));
@@ -201,7 +201,7 @@ public class PlanificadorTest {
     }
 
     @Test
-    public void generarConexionesVisuales_coordenadasCoincidenConArista() {
+    public void generarConexionesVisualesCoordenadasCoincidenConArista() {
         planificador.empezarPlanificacion(100, 500, 20);
         Grafo<Localidad> grafo = planificador.construirGrafoCompletoDeLocalidades(
                 Arrays.asList(BUENOS_AIRES, LA_PLATA));
