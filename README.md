@@ -22,6 +22,7 @@ Aplicación para planificar conexiones de fibra óptica entre localidades median
 ### Opcionales implementadas
 - Visualización de localidades y conexiones del AGM sobre un mapa interactivo (JMapViewer)
 - Persistencia de localidades entre sesiones (archivo `localidades.json`)
+- Visualización del costo individual de cada conexión del AGM en el panel lateral
 
 ## Cómo ejecutar
 
