@@ -1,5 +1,5 @@
 package logica.modelo;
-
+import java.util.Objects;
 public class Arista<T> {
 
     private final T vertice1;
@@ -19,7 +19,22 @@ public class Arista<T> {
         this.vertice2 = vertice2;
         this.peso = peso;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Arista<?> arista = (Arista<?>) obj;
+        
 
+        if (Double.compare(arista.peso, peso) != 0) return false;
+        return (vertice1.equals(arista.vertice1) && vertice2.equals(arista.vertice2)) ||
+               (vertice1.equals(arista.vertice2) && vertice2.equals(arista.vertice1));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(peso, vertice1.hashCode() + vertice2.hashCode());
+    }
     public T getVertice1() { 
     	return vertice1; 
     	}

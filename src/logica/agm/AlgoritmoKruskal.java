@@ -17,7 +17,6 @@ public class AlgoritmoKruskal<T> {
         List<T> nodos = grafo.getNodos();
         List<Arista<T>> aristas = new ArrayList<>(grafo.getAristas());
         
-        // Usamos el nuevo método getPeso()
         aristas.sort(Comparator.comparingDouble(Arista::getPeso));
 
         Map<T, Integer> indice = new HashMap<>();
@@ -35,8 +34,6 @@ public class AlgoritmoKruskal<T> {
                 uf.union(u, v);
             }
         }
-
-        // Devolvemos directamente un objeto Grafo, como pidió el profe
         return new Grafo<>(nodos, seleccionadas);
     }
 }

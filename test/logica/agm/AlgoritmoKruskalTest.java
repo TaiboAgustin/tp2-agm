@@ -35,8 +35,6 @@ public class AlgoritmoKruskalTest {
     public void resultadoConDosNodosTieneUnaArista() {
         Arista<Localidad> a = new Arista<>(buenosAires, rosario, 300.0);
         Grafo<Localidad> grafo = new Grafo<>(Arrays.asList(buenosAires, rosario), Arrays.asList(a));
-        
-        // Ahora devuelve un Grafo
         Grafo<Localidad> resultado = kruskal.calcular(grafo);
         assertEquals(1, resultado.getAristas().size());
     }
@@ -53,7 +51,7 @@ public class AlgoritmoKruskalTest {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
         Grafo<Localidad> resultado = kruskal.calcular(grafo);
         
-        assertEquals(900.0, GrafoTestHelper.calcularCostoTotal(resultado), 0.001);
+        assertEquals(900.0, resultado.getPesoTotal(), 0.001);
     }
 
     @Test

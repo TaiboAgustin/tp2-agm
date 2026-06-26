@@ -16,6 +16,9 @@ public class Grafo<T> {
         this.nodos = nodos;
         this.aristas = aristas;
     }
+    public double getPesoTotal() {
+        return aristas.stream().mapToDouble(Arista::getPeso).sum();
+    }
 
     public List<T> getNodos() { return Collections.unmodifiableList(nodos); }
     public List<Arista<T>> getAristas() { return Collections.unmodifiableList(aristas); }
