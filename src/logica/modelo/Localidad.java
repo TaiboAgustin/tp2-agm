@@ -3,10 +3,10 @@ package logica.modelo;
 import java.util.Objects;
 
 public class Localidad {
-	private static final double LONGITUD_MAXIMA = 180d;
-	private static final double LONGITUD_MINIMA = -180d;
-	private static final double LATITUD_MAXIMA = 90d;
-	private static final double LATITUD_MINIMA = -90d;
+    private static final double LONGITUD_MAXIMA = 180d;
+    private static final double LONGITUD_MINIMA = -180d;
+    private static final double LATITUD_MAXIMA = 90d;
+    private static final double LATITUD_MINIMA = -90d;
 
     private final String nombre;
     private final String provincia;
@@ -17,7 +17,6 @@ public class Localidad {
         validarString(nombre);
         validarString(provincia);
         validarCoordenadas(latitud, longitud);
-        
         this.nombre = nombre;
         this.provincia = provincia;
         this.latitud = latitud;
@@ -30,37 +29,36 @@ public class Localidad {
     public double getLongitud() { return longitud; }
 
     public double calcularDistancia(Localidad localidadExterna) {
-    	double latLocalidadExterna = localidadExterna.getLatitud();
-    	double lonLocalidadExterna = localidadExterna.getLongitud();
-    	double radioTierra = 6371.0;
-    	
-    	double difLatitud = Math.toRadians(latLocalidadExterna - this.latitud);
-    	double difLongitud = Math.toRadians(lonLocalidadExterna - this.longitud);
-    	
+        double latLocalidadExterna = localidadExterna.getLatitud();
+        double lonLocalidadExterna = localidadExterna.getLongitud();
+        double radioTierra = 6371.0;
+
+        double difLatitud = Math.toRadians(latLocalidadExterna - this.latitud);
+        double difLongitud = Math.toRadians(lonLocalidadExterna - this.longitud);
+
         double a = Math.sin(difLatitud / 2) * Math.sin(difLatitud / 2)
                 + Math.cos(Math.toRadians(this.latitud)) * Math.cos(Math.toRadians(latLocalidadExterna))
                 * Math.sin(difLongitud / 2) * Math.sin(difLongitud / 2);
 
-       double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-       return radioTierra * c;
+        return radioTierra * c;
     }
-    
-	private void validarCoordenadas(double latitud, double longitud) {
-		if (latitud < LATITUD_MINIMA || latitud > LATITUD_MAXIMA) {
-			throw new IllegalArgumentException("La latitud debe estar entre -90 y 90");
-		}
-		if (longitud > LONGITUD_MAXIMA || longitud < LONGITUD_MINIMA) {
-			throw new IllegalArgumentException("La longitud debe estar entre -180 y 180");
-		}
-	}
-	
-	private void validarString(String textoAValidar) {
-		if (textoAValidar == null || textoAValidar.trim().isEmpty()) {
-			throw new IllegalArgumentException("El texto no puede ser nulo o vacío");
-		}
-	}
 
+    private void validarCoordenadas(double latitud, double longitud) {
+        if (latitud < LATITUD_MINIMA || latitud > LATITUD_MAXIMA) {
+            throw new IllegalArgumentException("La latitud debe estar entre -90 y 90");
+        }
+        if (longitud > LONGITUD_MAXIMA || longitud < LONGITUD_MINIMA) {
+            throw new IllegalArgumentException("La longitud debe estar entre -180 y 180");
+        }
+    }
+
+    private void validarString(String textoAValidar) {
+        if (textoAValidar == null || textoAValidar.trim().isEmpty()) {
+            throw new IllegalArgumentException("El texto no puede ser nulo o vacío");
+        }
+    }
 
     @Override
     public boolean equals(Object obj) {
