@@ -14,7 +14,7 @@ public class AlgoritmoKruskal<T> {
         if (grafo == null)
             throw new IllegalArgumentException("El grafo no puede ser nulo");
 
-        List<T> nodos = grafo.getNodos();
+        List<T> nodos = new ArrayList<>(grafo.getNodos());
         List<Arista<T>> aristas = new ArrayList<>(grafo.getAristas());
         
         aristas.sort(Comparator.comparingDouble(Arista::getPeso));
@@ -34,6 +34,7 @@ public class AlgoritmoKruskal<T> {
                 uf.union(u, v);
             }
         }
+
         return new Grafo<>(nodos, seleccionadas);
     }
 }

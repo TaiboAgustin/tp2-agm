@@ -1,9 +1,9 @@
 package UI;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -14,150 +14,226 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
+import Logica_Planificador.PlanificadorRed;
 import logica.modelo.Localidad;
-import logica.modelo.ParametrosPrecio;
 
 public class SolicitudDePlanificacion extends JFrame {
 
-    private ParametrosPrecio parametros;
+    private static final Color BG       = new Color(18, 18, 19);
+    private static final Color GREEN    = new Color(83, 141, 78);
+    private static final Color INPUT_BG = new Color(26, 26, 27);
+    private static final Color BORDER   = new Color(58, 58, 60);
+    private static final Color GRAY     = new Color(129, 131, 132);
+
     private JTextField numCostoKm;
     private JTextField numTarifaInterprovincial;
     private JTextField numCostoDistanciasLargas;
 
-    private List<Localidad> listaLocalidades = new ArrayList<>();
     private DefaultListModel<String> listModel = new DefaultListModel<>();
+    private final PlanificadorRed planificador = new PlanificadorRed();
 
-    public SolicitudDePlanificacion(Main parent) {
-        setTitle("Generar Solicitud");
+    public SolicitudDePlanificacion() {
+        setTitle("Conectando Localidades — Planificación");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 520);
+        setBounds(100, 100, 720, 640);
         setLocationRelativeTo(null);
+        setResizable(false);
+        getContentPane().setBackground(BG);
         getContentPane().setLayout(null);
 
-        buildForm();
+        buildHeader();
+        buildParams();
         buildLocalidadesList();
         buildButtons();
-        
-        setVisible(true);
-
-        getRootPane().setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+        cargarLocalidadesGuardadas();
     }
 
-    private void buildForm() {
-        JLabel lblCostoKm = new JLabel("Costo del kilómetro:");
-        lblCostoKm.setBounds(16, 16, 200, 30);
-        getContentPane().add(lblCostoKm);
+    private void buildHeader() {
+        JLabel lblTitulo = new JLabel("NUEVA PLANIFICACIÓN", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitulo.setForeground(GREEN);
+        lblTitulo.setBounds(0, 16, 720, 28);
+        getContentPane().add(lblTitulo);
 
-        JLabel lblTarifa = new JLabel("Tarifa interprovincial:");
-        lblTarifa.setBounds(16, 56, 200, 30);
-        getContentPane().add(lblTarifa);
+        JLabel sep = new JLabel();
+        sep.setBackground(BORDER);
+        sep.setOpaque(true);
+        sep.setBounds(30, 52, 660, 1);
+        getContentPane().add(sep);
+    }
 
-        JLabel lblDistancias = new JLabel("Adicional por distancias largas:");
-        lblDistancias.setBounds(16, 96, 200, 30);
-        getContentPane().add(lblDistancias);
+    private void buildParams() {
+        numCostoKm               = buildField("Costo por kilómetro",             62);
+        numTarifaInterprovincial = buildField("Tarifa interprovincial",          136);
+        numCostoDistanciasLargas = buildField("Adicional por distancias largas", 210);
+    }
 
-        numCostoKm = new JTextField();
-        numCostoKm.setBounds(230, 16, 180, 30);
-        getContentPane().add(numCostoKm);
+    private JTextField buildField(String labelText, int y) {
+        JLabel lbl = new JLabel(labelText, SwingConstants.CENTER);
+        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        lbl.setForeground(Color.WHITE);
+        lbl.setBounds(110, y, 500, 22);
+        getContentPane().add(lbl);
 
-        numTarifaInterprovincial = new JTextField();
-        numTarifaInterprovincial.setBounds(230, 56, 180, 30);
-        getContentPane().add(numTarifaInterprovincial);
+        JTextField field = new JTextField();
+        field.setBackground(INPUT_BG);
+        field.setForeground(Color.WHITE);
+        field.setCaretColor(Color.WHITE);
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        field.setHorizontalAlignment(SwingConstants.CENTER);
+        field.setBorder(BorderFactory.createLineBorder(BORDER, 1));
+        field.setBounds(235, y + 26, 250, 36);
+        getContentPane().add(field);
 
-        numCostoDistanciasLargas = new JTextField();
-        numCostoDistanciasLargas.setBounds(230, 96, 180, 30);
-        getContentPane().add(numCostoDistanciasLargas);
+        return field;
     }
 
     private void buildLocalidadesList() {
-        JLabel lblLocalidades = new JLabel("Localidades agregadas:");
-        lblLocalidades.setBounds(16, 140, 200, 25);
-        getContentPane().add(lblLocalidades);
+        JLabel sep = new JLabel();
+        sep.setBackground(BORDER);
+        sep.setOpaque(true);
+        sep.setBounds(30, 295, 660, 1);
+        getContentPane().add(sep);
+
+        JLabel lblSeccion = new JLabel("LOCALIDADES AGREGADAS", SwingConstants.CENTER);
+        lblSeccion.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        lblSeccion.setForeground(GRAY);
+        lblSeccion.setBounds(0, 305, 720, 18);
+        getContentPane().add(lblSeccion);
 
         JList<String> jListLocalidades = new JList<>(listModel);
+        jListLocalidades.setBackground(INPUT_BG);
+        jListLocalidades.setForeground(Color.WHITE);
+        jListLocalidades.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        jListLocalidades.setSelectionBackground(BORDER);
+
         JScrollPane scroll = new JScrollPane(jListLocalidades);
-        scroll.setBounds(16, 170, 550, 200);
+        scroll.setBounds(30, 328, 660, 195);
+        scroll.setBorder(BorderFactory.createLineBorder(BORDER, 1));
+        scroll.getViewport().setBackground(INPUT_BG);
         getContentPane().add(scroll);
     }
 
     private void buildButtons() {
-        JButton btnAgregarLocalidad = new JButton("Agregar nueva localidad");
-        btnAgregarLocalidad.setBounds(16, 390, 200, 32);
+        JButton btnAgregarLocalidad = new JButton("Agregar localidad");
+        btnAgregarLocalidad.setBackground(INPUT_BG);
+        btnAgregarLocalidad.setForeground(Color.WHITE);
+        btnAgregarLocalidad.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnAgregarLocalidad.setBorderPainted(false);
+        btnAgregarLocalidad.setFocusPainted(false);
+        btnAgregarLocalidad.setBounds(30, 540, 180, 36);
         btnAgregarLocalidad.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AgregarLocalidad dialogo = new AgregarLocalidad(SolicitudDePlanificacion.this);
                 dialogo.setVisible(true);
-
                 Localidad nueva = dialogo.getLocalidadCreada();
                 if (nueva != null) {
-                    listaLocalidades.add(nueva);
-                    listModel.addElement(nueva.getNombre() + " — " + nueva.getProvincia());
+                    if (planificador.agregarLocalidad(nueva.getNombre(), nueva.getProvincia(),
+                            nueva.getLatitud(), nueva.getLongitud())) {
+                        refrescarListaLocalidades();
+                    } else {
+                        mostrarMensaje("La localidad ya existe");
+                    }
                 }
             }
         });
 
         JButton btnLimpiar = new JButton("Limpiar");
-        btnLimpiar.setBounds(228, 390, 100, 32);
+        btnLimpiar.setBackground(INPUT_BG);
+        btnLimpiar.setForeground(GRAY);
+        btnLimpiar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnLimpiar.setBorderPainted(false);
+        btnLimpiar.setFocusPainted(false);
+        btnLimpiar.setBounds(220, 540, 100, 36);
         btnLimpiar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 limpiarCampos();
             }
         });
 
-        JButton btnNuevaPlanificacion = new JButton("Generar planificacion");
-        btnNuevaPlanificacion.setBounds(340, 390, 190, 32);
-        btnNuevaPlanificacion.addActionListener(new ActionListener() {
+        JButton btnSalir = new JButton("Salir");
+        btnSalir.setBackground(INPUT_BG);
+        btnSalir.setForeground(GRAY);
+        btnSalir.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnSalir.setBorderPainted(false);
+        btnSalir.setFocusPainted(false);
+        btnSalir.setBounds(330, 540, 130, 36);
+        btnSalir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                crearParametrosPrecio();
-                crearPlanificacion();
+                System.exit(0);
+            }
+        });
+
+        JButton btnGenerar = new JButton("Generar planificación");
+        btnGenerar.setBackground(GREEN);
+        btnGenerar.setForeground(Color.WHITE);
+        btnGenerar.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btnGenerar.setBorderPainted(false);
+        btnGenerar.setFocusPainted(false);
+        btnGenerar.setBounds(480, 540, 210, 36);
+        btnGenerar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                crearPlanificacion(numCostoKm, numTarifaInterprovincial, numCostoDistanciasLargas);
             }
         });
 
         getContentPane().add(btnAgregarLocalidad);
         getContentPane().add(btnLimpiar);
-        getContentPane().add(btnNuevaPlanificacion);
+        getContentPane().add(btnSalir);
+        getContentPane().add(btnGenerar);
+    }
+
+    private void cargarLocalidadesGuardadas() {
+        planificador.cargarDatos();
+        planificador.agregarLocalidad("Buenos Aires", "Buenos Aires", -34.6037, -58.3816);
+        planificador.agregarLocalidad("Córdoba",      "Córdoba",      -31.4201, -64.1888);
+        planificador.agregarLocalidad("Rosario",      "Santa Fe",     -32.9468, -60.6393);
+        refrescarListaLocalidades();
     }
 
     private void limpiarCampos() {
-        listaLocalidades.clear();
-        listModel.clear();
+        planificador.limpiarLocalidades();
+        refrescarListaLocalidades();
         numCostoKm.setText("");
         numTarifaInterprovincial.setText("");
         numCostoDistanciasLargas.setText("");
     }
 
-    void crearParametrosPrecio() {
-        try {
-            float costoKm               = convertToFloat(numCostoKm);
-            float tarifaInterprovincial = convertToFloat(numTarifaInterprovincial);
-            float costoDistanciasLargas = convertToFloat(numCostoDistanciasLargas);
-
-            this.parametros = new ParametrosPrecio(costoKm, tarifaInterprovincial, costoDistanciasLargas);
-
-            mostrarMensaje("Planificación generada correctamente.", "Éxito");
-
-        } catch (NumberFormatException ex) {
-        	mostrarMensaje("Los costos deben ser números válidos.", "Error");
+    private void refrescarListaLocalidades() {
+        listModel.clear();
+        for (Localidad loc : planificador.getLocalidades()) {
+            listModel.addElement(loc.getNombre() + " — " + loc.getProvincia());
         }
     }
-    
-	private void crearPlanificacion() {
-		//Llamamos a iniciar una planificación. Debe verificarse que la lista de localidades no esté vacía y devolver un error en caso de que lo sea
-		try {
-			
-		} catch (Exception e) {
-			mostrarMensaje("Debe ingresarse al menos una localidad.", "Error");
-		}
-		
-	}
-	
-    protected void mostrarMensaje(String mensaje, String tipo) {
-        JOptionPane.showMessageDialog(this, mensaje, tipo, JOptionPane.ERROR_MESSAGE);
+
+    private void crearPlanificacion(JTextField costoKm, JTextField tarifaInterprovincial, JTextField costoDistanciasLargas) {
+        try {
+            double costo    = convertToDouble(costoKm);
+            double tarifa   = convertToDouble(tarifaInterprovincial);
+            double adicional = convertToDouble(costoDistanciasLargas);
+
+            if (planificador.empezarPlanificacion(costo, tarifa, adicional)) {
+                PantallaPrincipalMAPA mapa = new PantallaPrincipalMAPA(planificador);
+                mapa.mostrarVentana();
+                dispose();
+            } else {
+                mostrarMensaje("Problema a la hora de iniciar planificación");
+            }
+
+        } catch (NumberFormatException ex) {
+            mostrarMensaje("Los costos deben ser números válidos.");
+        } catch (IllegalArgumentException ex) {
+            mostrarMensaje(ex.getMessage());
+        }
     }
 
+    protected void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
-    float convertToFloat(JTextField text) {
-        return Float.parseFloat(text.getText().trim());
+    double convertToDouble(JTextField text) {
+        return Double.valueOf(text.getText().trim());
     }
 }

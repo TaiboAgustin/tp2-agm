@@ -30,6 +30,31 @@ public class AristaTest {
     public void verticesIgualesLanzaExcepcion() {
         new Arista<>(buenosAires, buenosAires, 1000.0);
     }
+    @Test
+    public void aceptaPesoNegativo() {
+        Arista<Localidad> a = new Arista<>(buenosAires, rosario, -1.0);
+        assertEquals(-1.0, a.getPeso(), 0.001);
+    }
 
-   
+    @Test
+    public void aceptaPesoCero() {
+        Arista<Localidad> a = new Arista<>(buenosAires, rosario, 0.0);
+        assertEquals(0.0, a.getPeso(), 0.001);
+    }
+
+    @Test
+    public void aristasInvertidasSonIgualesEnGrafoNoDirigido() {
+        Arista<Localidad> a1 = new Arista<>(buenosAires, rosario, 300.0);
+        Arista<Localidad> a2 = new Arista<>(rosario, buenosAires, 300.0);
+        assertEquals(a1, a2);
+        assertEquals(a1.hashCode(), a2.hashCode());
+    }
+
+    @Test
+    public void aristasConDistintoPesoNoSonIguales() {
+        Arista<Localidad> a1 = new Arista<>(buenosAires, rosario, 300.0);
+        Arista<Localidad> a2 = new Arista<>(buenosAires, rosario, 400.0);
+        assertNotEquals(a1, a2);
+    }
 }
+

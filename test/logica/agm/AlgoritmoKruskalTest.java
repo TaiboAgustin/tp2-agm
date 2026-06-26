@@ -50,7 +50,6 @@ public class AlgoritmoKruskalTest {
     public void costoTotalEsElMinimo() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
         Grafo<Localidad> resultado = kruskal.calcular(grafo);
-        
         assertEquals(900.0, resultado.getPesoTotal(), 0.001);
     }
 
@@ -77,12 +76,11 @@ public class AlgoritmoKruskalTest {
         return new Grafo<>(Arrays.asList(buenosAires, rosario, cordoba, mendoza), aristas);
     }
 
-    
     private boolean contieneArista(List<Arista<Localidad>> aristas, Localidad v1, Localidad v2, double peso) {
         return aristas.stream().anyMatch(a ->
             ((a.getVertice1().equals(v1) && a.getVertice2().equals(v2)) ||
              (a.getVertice1().equals(v2) && a.getVertice2().equals(v1)))
-            && a.getPeso() == peso
+            && Double.compare(a.getPeso(), peso) == 0
         );
     }
 }

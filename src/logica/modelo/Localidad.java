@@ -3,6 +3,10 @@ package logica.modelo;
 import java.util.Objects;
 
 public class Localidad {
+	private static final double LONGITUD_MAXIMA = 180d;
+	private static final double LONGITUD_MINIMA = -180d;
+	private static final double LATITUD_MAXIMA = 90d;
+	private static final double LATITUD_MINIMA = -90d;
 
     private final String nombre;
     private final String provincia;
@@ -10,9 +14,9 @@ public class Localidad {
     private final double longitud;
 
     public Localidad(String nombre, String provincia, double latitud, double longitud) throws IllegalArgumentException {
-        Validador.validarString(nombre);
-        Validador.validarString(provincia);
-        Validador.validarCoordenadas(latitud, longitud);
+        validarString(nombre);
+        validarString(provincia);
+        validarCoordenadas(latitud, longitud);
         
         this.nombre = nombre;
         this.provincia = provincia;
@@ -42,6 +46,23 @@ public class Localidad {
 
        return radioTierra * c;
     }
+    
+	private void validarCoordenadas(double latitud, double longitud) throws IllegalArgumentException {
+		if (latitud < LATITUD_MINIMA || latitud > LATITUD_MAXIMA) {
+			throw new IllegalArgumentException("La latitud debe estar entre -90 y 90");
+		}
+		if (longitud > LONGITUD_MAXIMA || longitud < LONGITUD_MINIMA) {
+			throw new IllegalArgumentException("La longitud debe estar entre -180 y 180");
+		}
+	}
+	
+	private void validarString(String textoAValidar) throws IllegalArgumentException {
+		if (textoAValidar == null || textoAValidar.trim().isEmpty()) {
+			throw new IllegalArgumentException("El texto no puede ser nulo o vacío");
+		}
+	}
+
+
 
     @Override
     public boolean equals(Object obj) {

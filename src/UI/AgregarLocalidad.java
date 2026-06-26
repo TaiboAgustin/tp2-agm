@@ -1,10 +1,26 @@
 package UI;
 
-import javax.swing.*;
-import logica.modelo.Localidad;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import logica.modelo.Localidad;
+
 public class AgregarLocalidad extends JDialog {
+
+    private static final Color BG       = new Color(18, 18, 19);
+    private static final Color INPUT_BG = new Color(26, 26, 27);
+    private static final Color BORDER   = new Color(58, 58, 60);
+    private static final Color GREEN    = new Color(83, 141, 78);
+    private static final Color GRAY     = new Color(129, 131, 132);
 
     private JTextField txtNombre;
     private JTextField txtProvincia;
@@ -15,10 +31,11 @@ public class AgregarLocalidad extends JDialog {
 
     public AgregarLocalidad(JFrame parent) {
         super(parent, "Nueva Localidad", true);
-        setBounds(150, 150, 400, 300);
+        setBounds(150, 150, 460, 380);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setResizable(false);
+        getContentPane().setBackground(BG);
         getContentPane().setLayout(null);
 
         buildForm();
@@ -30,42 +47,49 @@ public class AgregarLocalidad extends JDialog {
     }
 
     private void buildForm() {
-        addLabel("Nombre:",   16);
-        addLabel("Provincia:", 66);
-        addLabel("Latitud:",  116);
-        addLabel("Longitud:", 166);
-
-        txtNombre = new JTextField();
-        txtNombre.setBounds(150, 16, 230, 35);
-        getContentPane().add(txtNombre);
-
-        txtProvincia = new JTextField();
-        txtProvincia.setBounds(150, 66, 230, 35);
-        getContentPane().add(txtProvincia);
-
-        txtLatitud = new JTextField();
-        txtLatitud.setBounds(150, 116, 230, 35);
-        getContentPane().add(txtLatitud);
-
-        txtLongitud = new JTextField();
-        txtLongitud.setBounds(150, 166, 230, 35);
-        getContentPane().add(txtLongitud);
+        txtNombre    = buildField("Nombre",    30);
+        txtProvincia = buildField("Provincia", 100);
+        txtLatitud   = buildField("Latitud",   170);
+        txtLongitud  = buildField("Longitud",  240);
     }
 
-    private void addLabel(String text, int y) {
-        JLabel label = new JLabel(text);
-        label.setBounds(16, y, 130, 35);
-        getContentPane().add(label);
+    private JTextField buildField(String labelText, int y) {
+        JLabel lbl = new JLabel(labelText);
+        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        lbl.setForeground(GRAY);
+        lbl.setBounds(50, y, 360, 18);
+        getContentPane().add(lbl);
+
+        JTextField field = new JTextField();
+        field.setBackground(INPUT_BG);
+        field.setForeground(Color.WHITE);
+        field.setCaretColor(Color.WHITE);
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        field.setBorder(BorderFactory.createLineBorder(BORDER, 1));
+        field.setBounds(50, y + 20, 360, 34);
+        getContentPane().add(field);
+
+        return field;
     }
 
     private void buildButtons() {
         JButton btnLimpiar = new JButton("Limpiar");
-        btnLimpiar.setBounds(150, 210, 100, 30);
+        btnLimpiar.setBackground(new Color(26, 26, 27));
+        btnLimpiar.setForeground(GRAY);
+        btnLimpiar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        btnLimpiar.setBorderPainted(false);
+        btnLimpiar.setFocusPainted(false);
+        btnLimpiar.setBounds(50, 305, 110, 32);
         btnLimpiar.addActionListener((ActionEvent e) -> limpiarCampos());
         getContentPane().add(btnLimpiar);
 
         JButton btnCrear = new JButton("Crear localidad");
-        btnCrear.setBounds(260, 211, 120, 29);
+        btnCrear.setBackground(GREEN);
+        btnCrear.setForeground(Color.WHITE);
+        btnCrear.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btnCrear.setBorderPainted(false);
+        btnCrear.setFocusPainted(false);
+        btnCrear.setBounds(300, 305, 160, 32);
         btnCrear.addActionListener((ActionEvent e) -> crearLocalidad());
         getContentPane().add(btnCrear);
     }
@@ -77,25 +101,20 @@ public class AgregarLocalidad extends JDialog {
         String lonStr    = txtLongitud.getText().trim();
 
         if (nombre.isEmpty() || provincia.isEmpty() || latStr.isEmpty() || lonStr.isEmpty()) {
-        	mostrarError("Todos los campos son obligatorios.");
+            mostrarError("Todos los campos son obligatorios.");
             return;
         }
 
         try {
             double latitud  = Double.parseDouble(latStr);
             double longitud = Double.parseDouble(lonStr);
-
-            if (latitud  < -90  || latitud  > 90)  throw new NumberFormatException();
-            if (longitud < -180 || longitud > 180)  throw new NumberFormatException();
-
-            localidadCreada = new Localidad(nombre, provincia, latitud, longitud);
+            localidadCreada= new Localidad(nombre,provincia,latitud,longitud);
             dispose();
-
         } catch (NumberFormatException ex) {
-            mostrarError("Latitud (-90 a 90) y longitud (-180 a 180) deben ser números válidos.");
+            mostrarError("Latitud y longitud deben ser números válidos.");
         }
     }
-    
+
     protected void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }

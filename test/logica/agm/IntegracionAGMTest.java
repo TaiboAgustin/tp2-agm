@@ -79,6 +79,7 @@ public class IntegracionAGMTest {
         double costoAlternativo = 700.0 + 300.0 + 900.0;
         assertTrue(resultado.getPesoTotal() < costoAlternativo);
     }
+
     @Test
     public void agmConCincoLocalidadesTieneCuatroConexiones() {
         Grafo<Localidad> grafo = grafoCompleto5Nodos();
