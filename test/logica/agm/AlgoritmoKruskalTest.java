@@ -35,29 +35,29 @@ public class AlgoritmoKruskalTest {
     public void resultadoConDosNodosTieneUnaArista() {
         Arista<Localidad> a = new Arista<>(buenosAires, rosario, 300.0);
         Grafo<Localidad> grafo = new Grafo<>(Arrays.asList(buenosAires, rosario), Arrays.asList(a));
-        Grafo<Localidad> agm = kruskal.calcular(grafo);
-        assertEquals(1, agm.getAristas().size());
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        assertEquals(1, resultado.getAristas().size());
     }
 
     @Test
     public void resultadoTieneNMenosUnaAristas() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        Grafo<Localidad> agm = kruskal.calcular(grafo);
-        assertEquals(3, agm.getAristas().size());
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        assertEquals(3, resultado.getAristas().size());
     }
 
     @Test
     public void costoTotalEsElMinimo() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        Grafo<Localidad> agm = kruskal.calcular(grafo);
-        assertEquals(900.0, agm.getPesoTotal(), 0.001);
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        assertEquals(900.0, resultado.getPesoTotal(), 0.001);
     }
 
     @Test
     public void seSeleccionanLasAristasDeMenorCosto() {
         Grafo<Localidad> grafo = grafoCompleto4Nodos();
-        Grafo<Localidad> agm = kruskal.calcular(grafo);
-        List<Arista<Localidad>> conexiones = agm.getAristas();
+        Grafo<Localidad> resultado = kruskal.calcular(grafo);
+        List<Arista<Localidad>> conexiones = resultado.getAristas();
 
         assertTrue(contieneArista(conexiones, rosario, cordoba, 200.0));
         assertTrue(contieneArista(conexiones, buenosAires, rosario, 300.0));
@@ -78,7 +78,9 @@ public class AlgoritmoKruskalTest {
 
     private boolean contieneArista(List<Arista<Localidad>> aristas, Localidad v1, Localidad v2, double peso) {
         return aristas.stream().anyMatch(a ->
-            a.getVertice1().equals(v1) && a.getVertice2().equals(v2) && a.getPeso() == peso
+            ((a.getVertice1().equals(v1) && a.getVertice2().equals(v2)) ||
+             (a.getVertice1().equals(v2) && a.getVertice2().equals(v1)))
+            && Double.compare(a.getPeso(), peso) == 0
         );
     }
 }

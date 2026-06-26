@@ -13,7 +13,7 @@ public class Localidad {
     private final double latitud;
     private final double longitud;
 
-    public Localidad(String nombre, String provincia, double latitud, double longitud) throws IllegalArgumentException {
+    public Localidad(String nombre, String provincia, double latitud, double longitud) {
         validarString(nombre);
         validarString(provincia);
         validarCoordenadas(latitud, longitud);
@@ -28,11 +28,7 @@ public class Localidad {
     public String getProvincia() { return provincia; }
     public double getLatitud() { return latitud; }
     public double getLongitud() { return longitud; }
-    
-    /* 
-     * Se utiliza la fórmula de Haversine para calcular distancia entre dos puntos de la sup terrestre. Las variables a y c son
-     * parámetros de la fórmula
-     */
+
     public double calcularDistancia(Localidad localidadExterna) {
     	double latLocalidadExterna = localidadExterna.getLatitud();
     	double lonLocalidadExterna = localidadExterna.getLongitud();
@@ -50,7 +46,7 @@ public class Localidad {
        return radioTierra * c;
     }
     
-	private void validarCoordenadas(double latitud, double longitud) throws IllegalArgumentException {
+	private void validarCoordenadas(double latitud, double longitud) {
 		if (latitud < LATITUD_MINIMA || latitud > LATITUD_MAXIMA) {
 			throw new IllegalArgumentException("La latitud debe estar entre -90 y 90");
 		}
@@ -59,12 +55,11 @@ public class Localidad {
 		}
 	}
 	
-	private void validarString(String textoAValidar) throws IllegalArgumentException {
+	private void validarString(String textoAValidar) {
 		if (textoAValidar == null || textoAValidar.trim().isEmpty()) {
 			throw new IllegalArgumentException("El texto no puede ser nulo o vacío");
 		}
 	}
-
 
 
     @Override

@@ -40,10 +40,10 @@ public class Grafo<T> {
         return vecinos;
     }
 
-    public List<T> getNodos() { return Collections.unmodifiableList(nodos); }
-    public List<Arista<T>> getAristas() { return Collections.unmodifiableList(aristas); }
-
     public double getPesoTotal() {
         return aristas.stream().mapToDouble(Arista::getPeso).sum();
     }
+
+    public List<T> getNodos() { return Collections.unmodifiableList(nodos); }
+    public List<Arista<T>> getAristas() { return Collections.unmodifiableList(aristas); }
 }

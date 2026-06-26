@@ -16,6 +16,7 @@ public class AlgoritmoKruskal<T> {
 
         List<T> nodos = new ArrayList<>(grafo.getNodos());
         List<Arista<T>> aristas = new ArrayList<>(grafo.getAristas());
+        
         aristas.sort(Comparator.comparingDouble(Arista::getPeso));
 
         Map<T, Integer> indice = new HashMap<>();

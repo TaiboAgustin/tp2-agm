@@ -14,7 +14,7 @@ public class Arista<T> {
         if (vertice2 == null)
             throw new IllegalArgumentException("El vértice 2 no puede ser nulo");
         if (vertice1.equals(vertice2))
-            throw new IllegalArgumentException("Los dos vértices no pueden ser el mismo nodo");
+            throw new IllegalArgumentException("Los vértices no pueden ser el mismo nodo");
 
         this.vertice1 = vertice1;
         this.vertice2 = vertice2;
